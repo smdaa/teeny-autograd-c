@@ -1,0 +1,4 @@
+.vscode
+test/test_ndarray
+test/test_variable
+test/test_linear_layer
