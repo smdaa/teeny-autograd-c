@@ -23,11 +23,11 @@ void add_backward(variable *var)
 
     place_holder = var->children[0]->grad;
     var->children[0]->grad = add_ndarray_ndarray(var->grad, var->children[0]->grad);
-    free_ndarray(place_holder);
+    free_ndarray(&place_holder);
 
     place_holder = var->children[1]->grad;
     var->children[1]->grad = add_ndarray_ndarray(var->grad, var->children[1]->grad);
-    free_ndarray(place_holder);
+    free_ndarray(&place_holder);
 }
 
 void subtract_backward(variable *var)
@@ -36,11 +36,11 @@ void subtract_backward(variable *var)
 
     place_holder = var->children[0]->grad;
     var->children[0]->grad = add_ndarray_ndarray(var->grad, var->children[0]->grad);
-    free_ndarray(place_holder);
+    free_ndarray(&place_holder);
 
     place_holder = var->children[1]->grad;
     var->children[1]->grad = subtract_ndarray_ndarray(var->children[1]->grad, var->grad);
-    free_ndarray(place_holder);
+    free_ndarray(&place_holder);
 }
 
 void multiply_backward(variable *var)
@@ -51,14 +51,14 @@ void multiply_backward(variable *var)
     place_holder = var->children[0]->grad;
     temp = multiply_ndarray_ndarray(var->children[1]->val, var->grad);
     var->children[0]->grad = add_ndarray_ndarray(temp, var->children[0]->grad);
-    free_ndarray(temp);
-    free_ndarray(place_holder);
+    free_ndarray(&temp);
+    free_ndarray(&place_holder);
 
     place_holder = var->children[1]->grad;
     temp = multiply_ndarray_ndarray(var->children[0]->val, var->grad);
     var->children[1]->grad = add_ndarray_ndarray(temp, var->children[1]->grad);
-    free_ndarray(temp);
-    free_ndarray(place_holder);
+    free_ndarray(&temp);
+    free_ndarray(&place_holder);
 }
 
 void divide_backward(variable *var)
@@ -71,21 +71,21 @@ void divide_backward(variable *var)
     temp0 = divide_scalar_ndarray(var->children[1]->val, 1.0);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
     var->children[0]->grad = add_ndarray_ndarray(temp1, var->children[0]->grad);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
 
     place_holder = var->children[1]->grad;
     temp0 = multiply_ndarray_ndarray(var->children[1]->val, var->children[1]->val);
     temp1 = divide_ndarray_ndarray(var->children[0]->val, temp0);
-    free_ndarray(temp0);
+    free_ndarray(&temp0);
     temp0 = multiply_ndarray_scalar(temp1, -1.0);
-    free_ndarray(temp1);
+    free_ndarray(&temp1);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
     var->children[1]->grad = add_ndarray_ndarray(temp1, var->children[1]->grad);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
 }
 
 void power_backward(variable *var)
@@ -98,26 +98,26 @@ void power_backward(variable *var)
     place_holder = var->children[0]->grad;
     temp0 = subtract_ndarray_scalar(var->children[1]->val, 1);
     temp1 = power_ndarray_ndarray(var->children[0]->val, temp0);
-    free_ndarray(temp0);
+    free_ndarray(&temp0);
     temp0 = multiply_ndarray_ndarray(var->children[1]->val, temp1);
-    free_ndarray(temp1);
+    free_ndarray(&temp1);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
     var->children[0]->grad = add_ndarray_ndarray(temp1, var->children[0]->grad);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
 
     place_holder = var->children[1]->grad;
     temp0 = log_ndarray(var->children[0]->val);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
-    free_ndarray(temp0);
+    free_ndarray(&temp0);
     temp2 = power_ndarray_ndarray(var->children[0]->val, var->children[1]->val);
     temp0 = multiply_ndarray_ndarray(temp2, temp1);
     var->children[1]->grad = add_ndarray_ndarray(temp0, var->children[1]->grad);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(temp2);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&temp2);
+    free_ndarray(&place_holder);
 }
 
 void relu_backward(variable *var)
@@ -141,9 +141,9 @@ void relu_backward(variable *var)
     }
     temp1 = multiply_ndarray_ndarray(var->grad, temp0);
     var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp1);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
 }
 
 void matmul_backward(variable *var)
@@ -164,11 +164,12 @@ void matmul_backward(variable *var)
     order[dim - 2] = dim - 1;
     order[dim - 1] = dim - 2;
     temp0 = transpose_ndarray(var->children[1]->val, order);
+    free(order);
     temp1 = matmul_ndarray(var->grad, temp0);
     var->children[0]->grad = add_ndarray_ndarray(temp1, var->children[0]->grad);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
 
     place_holder = var->children[1]->grad;
     dim = var->children[0]->val->dim;
@@ -180,11 +181,12 @@ void matmul_backward(variable *var)
     order[dim - 2] = dim - 1;
     order[dim - 1] = dim - 2;
     temp0 = transpose_ndarray(var->children[0]->val, order);
+    free(order);
     temp1 = matmul_ndarray(temp0, var->grad);
     var->children[1]->grad = add_ndarray_ndarray(temp1, var->children[1]->grad);
-    free_ndarray(temp0);
-    free_ndarray(temp1);
-    free_ndarray(place_holder);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
 }
 
 variable *add_variable(variable *var1, variable *var2)
@@ -284,6 +286,50 @@ variable *matmul_variable(variable *var1, variable *var2)
     return var;
 }
 
+void build_topology(variable *var, variable ***topology, int *topology_size, variable ***visited, int *visited_size)
+{
+    for (int i = 0; i < *visited_size; ++i)
+    {
+        if ((*visited)[i] == var)
+        {
+            return;
+        }
+    }
+
+    *visited = (variable **)realloc(*visited, (*visited_size + 1) * sizeof(variable *));
+    (*visited)[*visited_size] = var;
+    (*visited_size)++;
+
+    for (int i = 0; i < var->n_children; ++i)
+    {
+        build_topology(var->children[i], topology, topology_size, visited, visited_size);
+    }
+
+    *topology = (variable **)realloc(*topology, (*topology_size + 1) * sizeof(variable *));
+    (*topology)[*topology_size] = var;
+    (*topology_size)++;
+}
+
+void backward_variables_graph(variable *root_var)
+{
+    variable **topology = NULL;
+    int topology_size = 0;
+    variable **visited = NULL;
+    int visited_size = 0;
+
+    build_topology(root_var, &topology, &topology_size, &visited, &visited_size);
+
+    for (int i = topology_size - 1; i >= 0; --i)
+    {
+        if (topology[i]->backward)
+        {
+            topology[i]->backward(topology[i]);
+        }
+    }
+    free(topology);
+    free(visited);
+}
+
 void print_variable(variable *var)
 {
     printf("----data----\n");
@@ -298,14 +344,43 @@ void print_variable(variable *var)
     }
 }
 
-void free_variable(variable *var)
+void free_variable(variable **var)
 {
-    free_ndarray(var->val);
-    free_ndarray(var->grad);
-    for (int i = 0; i < var->n_children; i++)
+    if (*var == NULL)
     {
-        free_variable(var->children[i]);
+        return;
     }
-    free(var->children);
-    free(var);
+
+    if ((*var)->val != NULL)
+    {
+        free_ndarray(&((*var)->val));
+    }
+
+    if ((*var)->grad != NULL)
+    {
+        free_ndarray(&((*var)->grad));
+    }
+
+    if ((*var)->children != NULL)
+    {
+        free((*var)->children);
+    }
+
+    free(*var);
+    *var = NULL;
+}
+
+void free_variables_graph(variable **root_var)
+{
+    if (*root_var == NULL)
+    {
+        return;
+    }
+
+    for (int i = 0; i < (*root_var)->n_children; i++)
+    {
+        free_variables_graph(&((*root_var)->children[i]));
+    }
+
+    free_variable(root_var);
 }

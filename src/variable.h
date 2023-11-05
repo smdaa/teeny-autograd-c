@@ -29,8 +29,12 @@ variable *relu_variable(variable *var);
 
 variable *matmul_variable(variable *var1, variable *var2);
 
+void backward_variables_graph(variable *root_var);
+
 void print_variable(variable *var);
 
-void free_variable(variable *var);
+void free_variable(variable **var);
+
+void free_variables_graph(variable **root_var);
 
 #endif

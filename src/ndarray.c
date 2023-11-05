@@ -352,6 +352,7 @@ ndarray *matmul_ndarray(ndarray *arr1, ndarray *arr2)
     }
 
     ndarray *arr = zeros_ndarray(dim, shape);
+    free(shape);
     int position[dim - 2];
     for (int i = 0; i < dim - 2; i++)
     {
@@ -397,6 +398,7 @@ ndarray *transpose_ndarray(ndarray *arr, int *order)
         shape[i] = arr->shape[order[i]];
     }
     ndarray *n_arr = zeros_ndarray(arr->dim, shape);
+    free(shape);
     int position[arr->dim];
     transpose_ndarray_helper(arr, n_arr, position, order, 0);
 
@@ -510,9 +512,25 @@ void print_ndarray(ndarray *arr)
     printf(")\n");
 }
 
-void free_ndarray(ndarray *arr)
+void free_ndarray(ndarray **arr)
 {
-    free(arr->shape);
-    free(arr->data);
-    free(arr);
+    if (*arr == NULL)
+    {
+        return;
+    }
+
+    if ((*arr)->shape != NULL)
+    {
+        free((*arr)->shape);
+        (*arr)->shape = NULL;
+    }
+
+    if ((*arr)->data != NULL)
+    {
+        free((*arr)->data);
+        (*arr)->data = NULL;
+    }
+
+    free(*arr);
+    *arr = NULL;
 }

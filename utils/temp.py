@@ -13,7 +13,7 @@ var = var1 ** var2
 var1.retain_grad()
 var2.retain_grad()
 
-up_stream_grad = torch.rand(n, requires_grad=True) + 1
+up_stream_grad = torch.rand(n, requires_grad=True)
 var.backward(up_stream_grad)
 
 save_ndarray_to_file(f"../test/test_data/{prefix}_var1_val.txt", var1.detach().numpy())

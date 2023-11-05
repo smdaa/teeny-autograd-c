@@ -67,6 +67,6 @@ bool is_equal(ndarray* arr1, ndarray* arr2);
 
 void print_ndarray(ndarray *arr);
 
-void free_ndarray(ndarray *arr);
+void free_ndarray(ndarray **arr);
 
 #endif
