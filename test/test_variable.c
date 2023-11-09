@@ -11,7 +11,8 @@ static void test_new_variable(void **state)
 {
     (void)state;
 
-    variable *var = new_variable(ones_ndarray(1, (int[]){4}));
+    ndarray *val = ones_ndarray(1, (int[]){4});
+    variable *var = new_variable(val);
 
     assert_non_null(var);
     assert_int_equal(var->val->dim, 1);
@@ -32,6 +33,7 @@ static void test_new_variable(void **state)
     assert_int_equal(var->n_children, 0);
     assert_null(var->backward);
 
+    free_ndarray(&val);
     free_variable(&var);
 }
 
@@ -39,8 +41,11 @@ static void test_add_variable(void **state)
 {
     (void)state;
 
-    variable *var1 = new_variable(read_ndarray("./test_data/test_add_variable_var1_val.txt"));
-    variable *var2 = new_variable(read_ndarray("./test_data/test_add_variable_var2_val.txt"));
+    ndarray *val1 = read_ndarray("./test_data/test_add_variable_var1_val.txt");
+    ndarray *val2 = read_ndarray("./test_data/test_add_variable_var2_val.txt");
+
+    variable *var1 = new_variable(val1);
+    variable *var2 = new_variable(val2);
 
     variable *var = add_variable(var1, var2);
     ndarray *var_val_gt = read_ndarray("./test_data/test_add_variable_var_val.txt");
@@ -57,6 +62,9 @@ static void test_add_variable(void **state)
     assert_true(is_equal(var1->grad, var1_grad_gt));
     assert_true(is_equal(var2->grad, var2_grad_gt));
 
+    free_ndarray(&val1);
+    free_ndarray(&val2);
+
     free_variable(&var1);
     free_variable(&var2);
     free_variable(&var);
@@ -70,8 +78,11 @@ static void test_subtract_variable(void **state)
 {
     (void)state;
 
-    variable *var1 = new_variable(read_ndarray("./test_data/test_subtract_variable_var1_val.txt"));
-    variable *var2 = new_variable(read_ndarray("./test_data/test_subtract_variable_var2_val.txt"));
+    ndarray *val1 = read_ndarray("./test_data/test_subtract_variable_var1_val.txt");
+    ndarray *val2 = read_ndarray("./test_data/test_subtract_variable_var2_val.txt");
+
+    variable *var1 = new_variable(val1);
+    variable *var2 = new_variable(val2);
 
     variable *var = subtract_variable(var1, var2);
     ndarray *var_val_gt = read_ndarray("./test_data/test_subtract_variable_var_val.txt");
@@ -88,6 +99,9 @@ static void test_subtract_variable(void **state)
     assert_true(is_equal(var1->grad, var1_grad_gt));
     assert_true(is_equal(var2->grad, var2_grad_gt));
 
+    free_ndarray(&val1);
+    free_ndarray(&val2);
+
     free_variable(&var1);
     free_variable(&var2);
     free_variable(&var);
@@ -101,8 +115,11 @@ static void test_multiply_variable(void **state)
 {
     (void)state;
 
-    variable *var1 = new_variable(read_ndarray("./test_data/test_multiply_variable_var1_val.txt"));
-    variable *var2 = new_variable(read_ndarray("./test_data/test_multiply_variable_var2_val.txt"));
+    ndarray *val1 = read_ndarray("./test_data/test_multiply_variable_var1_val.txt");
+    ndarray *val2 = read_ndarray("./test_data/test_multiply_variable_var2_val.txt");
+
+    variable *var1 = new_variable(val1);
+    variable *var2 = new_variable(val2);
 
     variable *var = multiply_variable(var1, var2);
     ndarray *var_val_gt = read_ndarray("./test_data/test_multiply_variable_var_val.txt");
@@ -119,6 +136,9 @@ static void test_multiply_variable(void **state)
     assert_true(is_equal(var1->grad, var1_grad_gt));
     assert_true(is_equal(var2->grad, var2_grad_gt));
 
+    free_ndarray(&val1);
+    free_ndarray(&val2);
+
     free_variable(&var1);
     free_variable(&var2);
     free_variable(&var);
@@ -132,8 +152,11 @@ static void test_divide_variable(void **state)
 {
     (void)state;
 
-    variable *var1 = new_variable(read_ndarray("./test_data/test_divide_variable_var1_val.txt"));
-    variable *var2 = new_variable(read_ndarray("./test_data/test_divide_variable_var2_val.txt"));
+    ndarray *val1 = read_ndarray("./test_data/test_divide_variable_var1_val.txt");
+    ndarray *val2 = read_ndarray("./test_data/test_divide_variable_var2_val.txt");
+
+    variable *var1 = new_variable(val1);
+    variable *var2 = new_variable(val2);
 
     variable *var = divide_variable(var1, var2);
     ndarray *var_val_gt = read_ndarray("./test_data/test_divide_variable_var_val.txt");
@@ -150,6 +173,9 @@ static void test_divide_variable(void **state)
     assert_true(is_equal(var1->grad, var1_grad_gt));
     assert_true(is_equal(var2->grad, var2_grad_gt));
 
+    free_ndarray(&val1);
+    free_ndarray(&val2);
+
     free_variable(&var1);
     free_variable(&var2);
     free_variable(&var);
@@ -163,8 +189,11 @@ static void test_power_variable(void **state)
 {
     (void)state;
 
-    variable *var1 = new_variable(read_ndarray("./test_data/test_power_variable_var1_val.txt"));
-    variable *var2 = new_variable(read_ndarray("./test_data/test_power_variable_var2_val.txt"));
+    ndarray *val1 = read_ndarray("./test_data/test_power_variable_var1_val.txt");
+    ndarray *val2 = read_ndarray("./test_data/test_power_variable_var2_val.txt");
+
+    variable *var1 = new_variable(val1);
+    variable *var2 = new_variable(val2);
 
     variable *var = power_variable(var1, var2);
     ndarray *var_val_gt = read_ndarray("./test_data/test_power_variable_var_val.txt");
@@ -181,6 +210,9 @@ static void test_power_variable(void **state)
     assert_true(is_equal(var1->grad, var1_grad_gt));
     assert_true(is_equal(var2->grad, var2_grad_gt));
 
+    free_ndarray(&val1);
+    free_ndarray(&val2);
+
     free_variable(&var1);
     free_variable(&var2);
     free_variable(&var);
@@ -194,7 +226,9 @@ static void test_relu_variable(void **state)
 {
     (void)state;
 
-    variable *var = new_variable(read_ndarray("./test_data/test_relu_variable_var_val.txt"));
+    ndarray *val = read_ndarray("./test_data/test_relu_variable_var_val.txt");
+
+    variable *var = new_variable(val);
     variable *nvar = relu_variable(var);
     ndarray *nvar_val_gt = read_ndarray("./test_data/test_relu_variable_nvar_val.txt");
 
@@ -208,6 +242,8 @@ static void test_relu_variable(void **state)
     assert_true(is_equal(nvar->val, nvar_val_gt));
     assert_true(is_equal(var->grad, var_grad_gt));
 
+    free_ndarray(&val);
+
     free_variable(&var);
     free_variable(&nvar);
 
@@ -219,8 +255,11 @@ static void test_matmul_variable(void **state)
 {
     (void)state;
 
-    variable *var1 = new_variable(read_ndarray("./test_data/test_matmul_variable_var1_val.txt"));
-    variable *var2 = new_variable(read_ndarray("./test_data/test_matmul_variable_var2_val.txt"));
+    ndarray *val1 = read_ndarray("./test_data/test_matmul_variable_var1_val.txt");
+    ndarray *val2 = read_ndarray("./test_data/test_matmul_variable_var2_val.txt");
+
+    variable *var1 = new_variable(val1);
+    variable *var2 = new_variable(val2);
 
     variable *var = matmul_variable(var1, var2);
     ndarray *var_val_gt = read_ndarray("./test_data/test_matmul_variable_var_val.txt");
@@ -237,6 +276,9 @@ static void test_matmul_variable(void **state)
     assert_true(is_equal(var1->grad, var1_grad_gt));
     assert_true(is_equal(var2->grad, var2_grad_gt));
 
+    free_ndarray(&val1);
+    free_ndarray(&val2);
+
     free_variable(&var1);
     free_variable(&var2);
     free_variable(&var);
@@ -250,8 +292,11 @@ static void test_backward_variables_graph(void **state)
 {
     (void)state;
 
-    variable *a = new_variable(read_ndarray("./test_data/test_backward_a_val.txt"));
-    variable *b = new_variable(read_ndarray("./test_data/test_backward_b_val.txt"));
+    ndarray *a_val = read_ndarray("./test_data/test_backward_a_val.txt");
+    ndarray *b_val = read_ndarray("./test_data/test_backward_b_val.txt");
+
+    variable *a = new_variable(a_val);
+    variable *b = new_variable(b_val);
 
     variable *c = add_variable(b, multiply_variable(a, add_variable(a, b)));
     ndarray *c_val_gt = read_ndarray("./test_data/test_backward_c_val.txt");
@@ -267,7 +312,10 @@ static void test_backward_variables_graph(void **state)
     assert_true(is_equal(a->grad, a_grad_gt));
     assert_true(is_equal(b->grad, b_grad_gt));
 
-    free_variables_graph(&c);
+    free_ndarray(&a_val);
+    free_ndarray(&b_val);
+
+    //free_variables_graph(&c);
 
     free_ndarray(&a_grad_gt);
     free_ndarray(&b_grad_gt);

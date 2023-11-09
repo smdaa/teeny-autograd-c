@@ -8,7 +8,7 @@ NDARRAY_TYPE relu(NDARRAY_TYPE a) { return fmax(a, 0.0); }
 variable *new_variable(ndarray *val)
 {
     variable *var = (variable *)malloc(sizeof(variable));
-    var->val = val;
+    var->val = copy_ndarray(val);
     var->grad = zeros_ndarray(val->dim, val->shape);
     var->children = NULL;
     var->n_children = 0;
