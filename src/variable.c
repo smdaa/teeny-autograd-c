@@ -13,6 +13,7 @@ variable *new_variable(ndarray *val)
     var->children = NULL;
     var->n_children = 0;
     var->backward = NULL;
+    var->ref_count = 0;
 
     return var;
 }
@@ -199,6 +200,9 @@ variable *add_variable(variable *var1, variable *var2)
     var->children[1] = var2;
     var->n_children = 2;
     var->backward = add_backward;
+    var->ref_count = 0;
+    var1->ref_count++;
+    var2->ref_count++;
 
     return var;
 }
@@ -213,6 +217,9 @@ variable *subtract_variable(variable *var1, variable *var2)
     var->children[1] = var2;
     var->n_children = 2;
     var->backward = subtract_backward;
+    var->ref_count = 0;
+    var1->ref_count++;
+    var2->ref_count++;
 
     return var;
 }
@@ -227,6 +234,9 @@ variable *multiply_variable(variable *var1, variable *var2)
     var->children[1] = var2;
     var->n_children = 2;
     var->backward = multiply_backward;
+    var->ref_count = 0;
+    var1->ref_count++;
+    var2->ref_count++;
 
     return var;
 }
@@ -241,6 +251,9 @@ variable *divide_variable(variable *var1, variable *var2)
     var->children[1] = var2;
     var->n_children = 2;
     var->backward = divide_backward;
+    var->ref_count = 0;
+    var1->ref_count++;
+    var2->ref_count++;
 
     return var;
 }
@@ -255,6 +268,9 @@ variable *power_variable(variable *var1, variable *var2)
     var->children[1] = var2;
     var->n_children = 2;
     var->backward = power_backward;
+    var->ref_count = 0;
+    var1->ref_count++;
+    var2->ref_count++;
 
     return var;
 }
@@ -268,7 +284,8 @@ variable *relu_variable(variable *var)
     n_var->children[0] = var;
     n_var->n_children = 1;
     n_var->backward = relu_backward;
-
+    n_var->ref_count = 0;
+    var->ref_count++;
     return n_var;
 }
 
@@ -282,6 +299,9 @@ variable *matmul_variable(variable *var1, variable *var2)
     var->children[1] = var2;
     var->n_children = 2;
     var->backward = matmul_backward;
+    var->ref_count = 0;
+    var1->ref_count++;
+    var2->ref_count++;
 
     return var;
 }
@@ -310,7 +330,7 @@ void build_topology(variable *var, variable ***topology, int *topology_size, var
     (*topology_size)++;
 }
 
-void backward_variables_graph(variable *root_var)
+void backward_variable(variable *root_var)
 {
     variable **topology = NULL;
     int topology_size = 0;
@@ -344,33 +364,38 @@ void print_variable(variable *var)
     }
 }
 
-void free_variable(variable **var)
+void free_variable_helper(variable **var)
 {
     if (*var == NULL)
     {
         return;
     }
 
-    if ((*var)->val != NULL)
+    (*var)->ref_count--;
+    if ((*var)->ref_count <= 0)
     {
-        free_ndarray(&((*var)->val));
-    }
 
-    if ((*var)->grad != NULL)
-    {
-        free_ndarray(&((*var)->grad));
-    }
+        if ((*var)->val != NULL)
+        {
+            free_ndarray(&((*var)->val));
+        }
 
-    if ((*var)->children != NULL)
-    {
-        free((*var)->children);
-    }
+        if ((*var)->grad != NULL)
+        {
+            free_ndarray(&((*var)->grad));
+        }
 
-    free(*var);
-    *var = NULL;
+        if ((*var)->children != NULL)
+        {
+            free((*var)->children);
+        }
+
+        free(*var);
+        *var = NULL;
+    }
 }
 
-void free_variables_graph(variable **root_var)
+void free_variable(variable **root_var)
 {
     if (*root_var == NULL)
     {
@@ -379,8 +404,8 @@ void free_variables_graph(variable **root_var)
 
     for (int i = 0; i < (*root_var)->n_children; i++)
     {
-        free_variables_graph(&((*root_var)->children[i]));
+        free_variable(&((*root_var)->children[i]));
     }
 
-    free_variable(root_var);
+    free_variable_helper(root_var);
 }

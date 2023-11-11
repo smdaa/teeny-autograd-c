@@ -9,8 +9,8 @@ typedef struct variable
     ndarray *grad;
     struct variable **children;
     int n_children;
-
     void (*backward)(struct variable *);
+    int ref_count;
 } variable;
 
 variable *new_variable(ndarray *val);
@@ -29,12 +29,10 @@ variable *relu_variable(variable *var);
 
 variable *matmul_variable(variable *var1, variable *var2);
 
-void backward_variables_graph(variable *root_var);
+void backward_variable(variable *root_var);
 
 void print_variable(variable *var);
 
-void free_variable(variable **var);
-
-void free_variables_graph(variable **root_var);
+void free_variable(variable **root_var);
 
 #endif

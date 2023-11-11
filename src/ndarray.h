@@ -3,7 +3,6 @@
 #define TEENY_AUTOGRAD_C_NDARRAY_H
 
 #define NDARRAY_TYPE double
-#define EPSILON 0.0001
 
 typedef struct ndarray
 {

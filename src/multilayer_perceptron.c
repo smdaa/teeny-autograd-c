@@ -3,6 +3,7 @@
 
 multilayer_perceptron *new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes, int *out_sizes)
 {
+    ndarray *place_holder;
     multilayer_perceptron *mlp = (multilayer_perceptron *)malloc(sizeof(multilayer_perceptron));
     mlp->n_layers = n_layers;
     mlp->batch_size = batch_size;
@@ -14,8 +15,14 @@ multilayer_perceptron *new_multilayer_perceptron(int n_layers, int batch_size, i
     {
         mlp->in_sizes[i] = in_sizes[i];
         mlp->out_sizes[i] = out_sizes[i];
-        mlp->weights[i] = new_variable(random_ndrray(2, (int[]){in_sizes[i], out_sizes[i]}));
-        mlp->bias[i] = new_variable(random_ndrray(2, (int[]){1, out_sizes[i]}));
+
+        place_holder = random_ndrray(2, (int[]){in_sizes[i], out_sizes[i]});
+        mlp->weights[i] = new_variable(place_holder);
+        free_ndarray(&place_holder);
+
+        place_holder = random_ndrray(2, (int[]){1, out_sizes[i]});
+        mlp->bias[i] = new_variable(place_holder);
+        free_ndarray(&place_holder);
     }
 
     return mlp;
@@ -23,12 +30,14 @@ multilayer_perceptron *new_multilayer_perceptron(int n_layers, int batch_size, i
 
 variable *forward_multilayer_perceptron(multilayer_perceptron *mlp, variable *input)
 {
+    ndarray *place_holder = ones_ndarray(2, (int[]){mlp->batch_size, 1});
     variable *output = input;
     for (int i = 0; i < mlp->n_layers; i++)
     {
         output = matmul_variable(output, mlp->weights[i]);
-        output = add_variable(output, matmul_variable(new_variable(ones_ndarray(2, (int[]){mlp->batch_size, 1})), mlp->bias[i]));
+        output = add_variable(output, matmul_variable(new_variable(place_holder), mlp->bias[i]));
     }
+    free_ndarray(&place_holder);
 
     return output;
 }

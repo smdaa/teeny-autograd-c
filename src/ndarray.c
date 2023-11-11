@@ -3,6 +3,8 @@
 #include <math.h>
 #include "ndarray.h"
 
+#define EPSILON 0.0001
+
 NDARRAY_TYPE add(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a + b; }
 
 NDARRAY_TYPE subtract(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a - b; }
