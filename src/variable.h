@@ -27,6 +27,8 @@ variable *power_variable(variable *var1, variable *var2);
 
 variable *relu_variable(variable *var);
 
+variable *sigmoid_variable(variable *var);
+
 variable *matmul_variable(variable *var1, variable *var2);
 
 void backward_variable(variable *root_var);

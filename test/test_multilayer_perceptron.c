@@ -10,7 +10,7 @@ static void test_new_multilayer_perceptron(void **state)
 {
     (void)state;
 
-    multilayer_perceptron *mlp = new_multilayer_perceptron(2, 64, (int[]){16, 32}, (int[]){32, 8});
+    multilayer_perceptron *mlp = new_multilayer_perceptron(2, 64, (int[]){16, 32}, (int[]){32, 8}, (activation_function[]){LINEAR, LINEAR});
     assert_non_null(mlp);
     assert_int_equal(mlp->n_layers, 2);
     assert_int_equal(mlp->batch_size, 64);
@@ -68,7 +68,7 @@ static void test_forward_multilayer_perceptron(void **state)
     variable *bias1 = new_variable(bias1_val);
     variable *bias2 = new_variable(bias2_val);
 
-    multilayer_perceptron *mlp = new_multilayer_perceptron(3, 64, (int[]){32, 128, 256}, (int[]){128, 256, 512});
+    multilayer_perceptron *mlp = new_multilayer_perceptron(3, 64, (int[]){32, 128, 256}, (int[]){128, 256, 512}, (activation_function[]){SIGMOID, RELU, LINEAR});
 
     free_variable(&(mlp->weights[0]));
     free_variable(&(mlp->weights[1]));

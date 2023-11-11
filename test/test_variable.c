@@ -208,20 +208,46 @@ static void test_relu_variable(void **state)
     ndarray *var_grad_gt = read_ndarray("./test_data/test_relu_variable_var_grad.txt");
 
     variable *var = new_variable(val);
-    variable *n_var = relu_variable(var);
+    variable *nvar = relu_variable(var);
 
-    free_ndarray(&(n_var->grad));
-    n_var->grad = up_stream_grad;
-    n_var->backward(n_var);
+    free_ndarray(&(nvar->grad));
+    nvar->grad = up_stream_grad;
+    nvar->backward(nvar);
 
-    assert_true(is_equal(n_var->val, nvar_val_gt));
+    assert_true(is_equal(nvar->val, nvar_val_gt));
     assert_true(is_equal(var->grad, var_grad_gt));
 
     free_ndarray(&val);
     free_ndarray(&nvar_val_gt);
     free_ndarray(&var_grad_gt);
 
-    free_variable(&n_var);
+    free_variable(&nvar);
+}
+
+static void test_sigmoid_variable(void **state)
+{
+    (void)state;
+
+    ndarray *val = read_ndarray("./test_data/test_sigmoid_variable_var_val.txt");
+    ndarray *nvar_val_gt = read_ndarray("./test_data/test_sigmoid_variable_nvar_val.txt");
+    ndarray *up_stream_grad = read_ndarray("./test_data/test_sigmoid_variable_up_stream_grad.txt");
+    ndarray *var_grad_gt = read_ndarray("./test_data/test_sigmoid_variable_var_grad.txt");
+
+    variable *var = new_variable(val);
+    variable *nvar = sigmoid_variable(var);
+
+    free_ndarray(&(nvar->grad));
+    nvar->grad = up_stream_grad;
+    nvar->backward(nvar);
+
+    assert_true(is_equal(nvar->val, nvar_val_gt));
+    assert_true(is_equal(var->grad, var_grad_gt));
+
+    free_ndarray(&val);
+    free_ndarray(&nvar_val_gt);
+    free_ndarray(&var_grad_gt);
+
+    free_variable(&nvar);
 }
 
 static void test_matmul_variable(void **state)
@@ -298,6 +324,7 @@ int main(void)
         cmocka_unit_test(test_divide_variable),
         cmocka_unit_test(test_power_variable),
         cmocka_unit_test(test_relu_variable),
+        cmocka_unit_test(test_sigmoid_variable),
         cmocka_unit_test(test_matmul_variable),
         cmocka_unit_test(test_backward_variable),
     };

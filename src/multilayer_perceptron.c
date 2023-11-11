@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "multilayer_perceptron.h"
 
-multilayer_perceptron *new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes, int *out_sizes)
+multilayer_perceptron *new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes, int *out_sizes, activation_function *activations)
 {
     ndarray *place_holder;
     multilayer_perceptron *mlp = (multilayer_perceptron *)malloc(sizeof(multilayer_perceptron));
@@ -11,10 +11,12 @@ multilayer_perceptron *new_multilayer_perceptron(int n_layers, int batch_size, i
     mlp->out_sizes = (int *)malloc(n_layers * sizeof(int));
     mlp->weights = (variable **)malloc(n_layers * sizeof(variable *));
     mlp->bias = (variable **)malloc(n_layers * sizeof(variable *));
+    mlp->activations = (activation_function *)malloc(n_layers * sizeof(activation_function));
     for (int i = 0; i < n_layers; i++)
     {
         mlp->in_sizes[i] = in_sizes[i];
         mlp->out_sizes[i] = out_sizes[i];
+        mlp->activations[i] = activations[i];
 
         place_holder = random_ndrray(2, (int[]){in_sizes[i], out_sizes[i]});
         mlp->weights[i] = new_variable(place_holder);
@@ -36,6 +38,20 @@ variable *forward_multilayer_perceptron(multilayer_perceptron *mlp, variable *in
     {
         output = matmul_variable(output, mlp->weights[i]);
         output = add_variable(output, matmul_variable(new_variable(place_holder), mlp->bias[i]));
+        switch (mlp->activations[i])
+        {
+        case LINEAR:
+            break;
+        case SIGMOID:
+            output = sigmoid_variable(output);
+            break;
+        case RELU:
+            output = relu_variable(output);
+            break;
+
+        default:
+            break;
+        }
     }
     free_ndarray(&place_holder);
 
@@ -63,26 +79,19 @@ void free_multilayer_perceptron(multilayer_perceptron **mlp)
 
     if ((*mlp)->weights != NULL)
     {
-        /*
-        for (int i = 0; i < (*mlp)->n_layers; i++)
-        {
-            free_variable(&((*mlp)->weights[i]));
-        }
-        */
         free((*mlp)->weights);
         (*mlp)->weights = NULL;
     }
 
     if ((*mlp)->bias != NULL)
     {
-        /*
-        for (int i = 0; i < (*mlp)->n_layers; i++)
-        {
-            free_variable(&((*mlp)->bias[i]));
-        }
-        */
         free((*mlp)->bias);
         (*mlp)->bias = NULL;
+    }
+    if ((*mlp)->activations != NULL)
+    {
+        free((*mlp)->activations);
+        (*mlp)->activations = NULL;
     }
 
     free(*mlp);

@@ -4,6 +4,8 @@
 #include "variable.h"
 
 NDARRAY_TYPE relu(NDARRAY_TYPE a) { return fmax(a, 0.0); }
+NDARRAY_TYPE sigmoid(NDARRAY_TYPE a) { return 1.0 / (1.0 + exp(-a)); }
+NDARRAY_TYPE d_sigmoid(NDARRAY_TYPE a) { return exp(-a) / pow(1.0 + exp(-a), 2.0); }
 
 variable *new_variable(ndarray *val)
 {
@@ -140,6 +142,21 @@ void relu_backward(variable *var)
             temp0->data[i] = 0.0;
         }
     }
+    temp1 = multiply_ndarray_ndarray(var->grad, temp0);
+    var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp1);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
+}
+
+void sigmoid_backward(variable *var)
+{
+    ndarray *place_holder;
+    ndarray *temp0;
+    ndarray *temp1;
+
+    place_holder = var->children[0]->grad;
+    temp0 = unary_op_ndarray(var->children[0]->val, d_sigmoid);
     temp1 = multiply_ndarray_ndarray(var->grad, temp0);
     var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp1);
     free_ndarray(&temp0);
@@ -286,6 +303,22 @@ variable *relu_variable(variable *var)
     n_var->backward = relu_backward;
     n_var->ref_count = 0;
     var->ref_count++;
+
+    return n_var;
+}
+
+variable *sigmoid_variable(variable *var)
+{
+    variable *n_var = (variable *)malloc(sizeof(variable));
+    n_var->val = unary_op_ndarray(var->val, sigmoid);
+    n_var->grad = zeros_ndarray(n_var->val->dim, n_var->val->shape);
+    n_var->children = (variable **)malloc(sizeof(variable *));
+    n_var->children[0] = var;
+    n_var->n_children = 1;
+    n_var->backward = sigmoid_backward;
+    n_var->ref_count = 0;
+    var->ref_count++;
+
     return n_var;
 }
 
