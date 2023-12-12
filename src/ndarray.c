@@ -3,21 +3,16 @@
 #include <math.h>
 #include "ndarray.h"
 
-#define EPSILON 0.0001
+static NDARRAY_TYPE add(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a + b; }
+static NDARRAY_TYPE subtract(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a - b; }
+static NDARRAY_TYPE multiply(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a * b; }
+static NDARRAY_TYPE divide(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a / b; }
+static NDARRAY_TYPE divide_(NDARRAY_TYPE a, NDARRAY_TYPE b) { return b / a; }
+static NDARRAY_TYPE power(NDARRAY_TYPE a, NDARRAY_TYPE b) { return pow(a, b); }
+static NDARRAY_TYPE max(NDARRAY_TYPE a, NDARRAY_TYPE b) { return (a > b) ? a : b; }
+static NDARRAY_TYPE min(NDARRAY_TYPE a, NDARRAY_TYPE b) { return (a < b) ? a : b; }
 
-NDARRAY_TYPE add(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a + b; }
-
-NDARRAY_TYPE subtract(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a - b; }
-
-NDARRAY_TYPE multiply(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a * b; }
-
-NDARRAY_TYPE divide(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a / b; }
-
-NDARRAY_TYPE divide_(NDARRAY_TYPE a, NDARRAY_TYPE b) { return b / a; }
-
-NDARRAY_TYPE power(NDARRAY_TYPE a, NDARRAY_TYPE b) { return pow(a, b); }
-
-int get_size(int dim, const int *shape)
+static int get_size(int dim, const int *shape)
 {
     int size = 1;
     for (int i = 0; i < dim; i++)
@@ -25,6 +20,18 @@ int get_size(int dim, const int *shape)
         size *= shape[i];
     }
     return size;
+}
+
+static int get_offset(ndarray *arr, int *position, int pdim)
+{
+    unsigned int offset = 0;
+    unsigned int len = arr->size;
+    for (int i = 0; i < pdim; i++)
+    {
+        len /= arr->shape[i];
+        offset += position[i] * len;
+    }
+    return offset;
 }
 
 ndarray *full_ndarray(int dim, int *shape, NDARRAY_TYPE value)
@@ -122,6 +129,55 @@ ndarray *random_ndrray(int dim, int *shape)
     return arr;
 }
 
+ndarray *read_ndarray(const char *filename)
+{
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        perror("Error opening file");
+        return NULL;
+    }
+    ndarray *arr = (ndarray *)malloc(sizeof(ndarray));
+    fscanf(file, "%d %d", &arr->dim, &arr->size);
+    arr->shape = (int *)malloc(arr->dim * sizeof(int));
+    arr->data = (NDARRAY_TYPE *)malloc(arr->size * sizeof(NDARRAY_TYPE));
+    for (int i = 0; i < arr->dim; i++)
+    {
+        fscanf(file, "%d", &arr->shape[i]);
+    }
+    for (int i = 0; i < arr->size; i++)
+    {
+        fscanf(file, "%le", &arr->data[i]);
+    }
+    fclose(file);
+
+    return arr;
+}
+
+bool is_equal_ndarray(ndarray *arr1, ndarray *arr2)
+{
+    if (arr1->dim != arr2->dim || arr1->size != arr2->size)
+    {
+        return false;
+    }
+    for (int i = 0; i < arr1->dim; i++)
+    {
+        if (arr1->shape[i] != arr2->shape[i])
+        {
+            return false;
+        }
+    }
+    for (int i = 0; i < arr1->size; i++)
+    {
+        if (fabs(arr1->data[i] - arr2->data[i]) > NDARRAY_TYPE_EPSILON * fmax(fabs(arr1->data[i]), fabs(arr2->data[i])))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 ndarray *unary_op_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE))
 {
     ndarray *n_arr = (ndarray *)malloc(sizeof(ndarray));
@@ -202,29 +258,42 @@ ndarray *binary_op_ndarray(ndarray *arr1, ndarray *arr2, NDARRAY_TYPE (*op)(NDAR
         printf("Incompatible dimensions");
         return NULL;
     }
+
     for (int i = 0; i < arr1->dim; i++)
     {
-        if (arr1->shape[i] != arr2->shape[i])
+        if ((arr1->shape[i] != arr2->shape[i]) && (arr1->shape[i] != 1 && arr2->shape[i] != 1))
         {
-            printf("Incompatible shapes");
+            printf("Incompatible dimensions");
             return NULL;
         }
     }
 
-    ndarray *arr = (ndarray *)malloc(sizeof(ndarray));
-    arr->dim = arr1->dim;
-    arr->size = arr1->size;
-    arr->shape = (int *)malloc(arr->dim * sizeof(int));
-    for (int i = 0; i < arr->dim; i++)
+    int dim = arr1->dim;
+    int *shape = (int *)malloc(dim * sizeof(int));
+    for (int i = 0; i < dim; i++)
     {
-        arr->shape[i] = arr1->shape[i];
+        int shape1 = arr1->shape[i];
+        int shape2 = arr2->shape[i];
+        shape[i] = shape1 > shape2 ? shape1 : shape2;
     }
-    arr->data = (NDARRAY_TYPE *)malloc(arr->size * sizeof(NDARRAY_TYPE));
+    ndarray *arr = zeros_ndarray(dim, shape);
+    free(shape);
+
     for (int i = 0; i < arr->size; i++)
     {
-        arr->data[i] = op(arr1->data[i], arr2->data[i]);
+        int idx1 = 0, idx2 = 0, temp = i, stride1 = 1, stride2 = 1;
+        for (int j = arr->dim - 1; j >= 0; j--)
+        {
+            int shape1 = arr1->shape[j];
+            int shape2 = arr2->shape[j];
+            idx1 += (temp % shape1) * stride1;
+            idx2 += (temp % shape2) * stride2;
+            stride1 *= shape1;
+            stride2 *= shape2;
+            temp /= (shape1 > shape2 ? shape1 : shape2);
+        }
+        arr->data[i] = op(arr1->data[idx1 % arr1->size], arr2->data[idx2 % arr2->size]);
     }
-
     return arr;
 }
 
@@ -266,18 +335,6 @@ void matmul_2d_ndarray_helper(NDARRAY_TYPE *a, NDARRAY_TYPE *b, NDARRAY_TYPE *c,
             }
         }
     }
-}
-
-int get_offset(ndarray *arr, int *position, int pdim)
-{
-    unsigned int offset = 0;
-    unsigned int len = arr->size;
-    for (int i = 0; i < pdim; i++)
-    {
-        len /= arr->shape[i];
-        offset += position[i] * len;
-    }
-    return offset;
 }
 
 void matmul_ndarray_helper(ndarray *arr, ndarray *arr1, ndarray *arr2, int *position, int dim)
@@ -407,53 +464,87 @@ ndarray *transpose_ndarray(ndarray *arr, int *order)
     return n_arr;
 }
 
-ndarray *read_ndarray(const char *filename)
+void reduce_ndarray_helper(ndarray *arr, ndarray *n_arr, int *position, NDARRAY_TYPE (*op)(NDARRAY_TYPE, NDARRAY_TYPE), int axis, int dim)
 {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL)
+    if (dim >= arr->dim)
     {
-        perror("Error opening file");
-        return NULL;
-    }
-    ndarray *arr = (ndarray *)malloc(sizeof(ndarray));
-    fscanf(file, "%d %d", &arr->dim, &arr->size);
-    arr->shape = (int *)malloc(arr->dim * sizeof(int));
-    arr->data = (NDARRAY_TYPE *)malloc(arr->size * sizeof(NDARRAY_TYPE));
-    for (int i = 0; i < arr->dim; i++)
-    {
-        fscanf(file, "%d", &arr->shape[i]);
-    }
-    for (int i = 0; i < arr->size; i++)
-    {
-        fscanf(file, "%le", &arr->data[i]);
-    }
-    fclose(file);
+        int rdim = n_arr->dim;
+        int n_position[rdim];
 
-    return arr;
+        for (int i = 0; i < rdim; i++)
+        {
+            n_position[i] = (i == axis) ? 0 : position[i];
+        }
+
+        int offset_arr = get_offset(arr, position, arr->dim);
+        int offset_narr = get_offset(n_arr, n_position, n_arr->dim);
+
+        n_arr->data[offset_narr] = (dim == axis) ? arr->data[offset_arr] : op(n_arr->data[offset_narr], arr->data[offset_arr]);
+
+        return;
+    }
+
+    for (int i = 0; i < arr->shape[dim]; i++)
+    {
+        position[dim] = i;
+        reduce_ndarray_helper(arr, n_arr, position, op, axis, dim + 1);
+    }
 }
 
-bool is_equal(ndarray *arr1, ndarray *arr2)
+ndarray *reduce_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE, NDARRAY_TYPE), int axis, NDARRAY_TYPE initial_value)
 {
-    if (arr1->dim != arr2->dim || arr1->size != arr2->size)
+    int *shape = (int *)malloc(arr->dim * sizeof(int));
+    for (int i = 0; i < arr->dim; i++)
     {
-        return false;
+        shape[i] = (i == axis) ? 1 : arr->shape[i];
     }
-    for (int i = 0; i < arr1->dim; i++)
+    ndarray *n_arr = full_ndarray(arr->dim, shape, initial_value);
+    free(shape);
+    int position[arr->dim];
+    reduce_ndarray_helper(arr, n_arr, position, op, axis, 0);
+
+    return n_arr;
+}
+
+ndarray *max_ndarray(ndarray *arr, int axis)
+{
+    return reduce_ndarray(arr, max, axis, NDARRAY_TYPE_MIN);
+}
+
+ndarray *min_ndarray(ndarray *arr, int axis)
+{
+    return reduce_ndarray(arr, min, axis, NDARRAY_TYPE_MAX);
+}
+
+ndarray *sum_ndarray(ndarray *arr, int axis)
+{
+    return reduce_ndarray(arr, add, axis, 0.0);
+}
+
+NDARRAY_TYPE reduce_all_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE, NDARRAY_TYPE), NDARRAY_TYPE initial_value)
+{
+    NDARRAY_TYPE value = initial_value;
+    for (int i = 0; i < arr->size; i++)
     {
-        if (arr1->shape[i] != arr2->shape[i])
-        {
-            return false;
-        }
-    }
-    for (int i = 0; i < arr1->size; i++)
-    {
-        if (fabs(arr1->data[i] - arr2->data[i]) > EPSILON)
-        {
-            return false;
-        }
+        value = op(value, arr->data[i]);
     }
 
-    return true;
+    return value;
+}
+
+NDARRAY_TYPE max_all_ndarray(ndarray *arr)
+{
+    return reduce_all_ndarray(arr, max, NDARRAY_TYPE_MIN);
+}
+
+NDARRAY_TYPE min_all_ndarray(ndarray *arr)
+{
+    return reduce_all_ndarray(arr, min, NDARRAY_TYPE_MAX);
+}
+
+NDARRAY_TYPE sum_all_ndarray(ndarray *arr)
+{
+    return reduce_all_ndarray(arr, add, 0.0);
 }
 
 void print_ndarray_helper(ndarray *arr, int level, int *index, int tab)

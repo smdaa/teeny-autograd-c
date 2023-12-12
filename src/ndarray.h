@@ -1,8 +1,12 @@
 #include <stdbool.h>
+#include <float.h>
 #ifndef TEENY_AUTOGRAD_C_NDARRAY_H
 #define TEENY_AUTOGRAD_C_NDARRAY_H
 
 #define NDARRAY_TYPE double
+#define NDARRAY_TYPE_MIN DBL_MIN
+#define NDARRAY_TYPE_MAX DBL_MAX
+#define NDARRAY_TYPE_EPSILON FLT_EPSILON
 
 typedef struct ndarray
 {
@@ -25,6 +29,10 @@ ndarray *ones_ndarray(int dim, int *shape);
 ndarray *eye_ndarray(int size);
 
 ndarray *random_ndrray(int dim, int *shape);
+
+ndarray *read_ndarray(const char *filename);
+
+bool is_equal_ndarray(ndarray *arr1, ndarray *arr2);
 
 ndarray *unary_op_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE));
 
@@ -58,11 +66,23 @@ ndarray *power_ndarray_ndarray(ndarray *arr1, ndarray *arr2);
 
 ndarray *matmul_ndarray(ndarray *arr1, ndarray *arr2);
 
-ndarray *transpose_ndarray(ndarray *arr, int* order);
+ndarray *transpose_ndarray(ndarray *arr, int *order);
 
-ndarray *read_ndarray(const char *filename);
+ndarray *reduce_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE, NDARRAY_TYPE), int axis, NDARRAY_TYPE initial_value);
 
-bool is_equal(ndarray* arr1, ndarray* arr2);
+ndarray *max_ndarray(ndarray *arr, int axis);
+
+ndarray *min_ndarray(ndarray *arr, int axis);
+
+ndarray *sum_ndarray(ndarray *arr, int axis);
+
+NDARRAY_TYPE reduce_all_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE, NDARRAY_TYPE), NDARRAY_TYPE initial_value);
+
+NDARRAY_TYPE max_all_ndarray(ndarray *arr);
+
+NDARRAY_TYPE min_all_ndarray(ndarray *arr);
+
+NDARRAY_TYPE sum_all_ndarray(ndarray *arr);
 
 void print_ndarray(ndarray *arr);
 

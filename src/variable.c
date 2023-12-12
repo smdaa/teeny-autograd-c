@@ -23,45 +23,116 @@ variable *new_variable(ndarray *val)
 void add_backward(variable *var)
 {
     ndarray *place_holder;
+    ndarray *reduced_grad;
+    ndarray *temp;
 
     place_holder = var->children[0]->grad;
-    var->children[0]->grad = add_ndarray_ndarray(var->grad, var->children[0]->grad);
+    reduced_grad = copy_ndarray(var->grad);
+    for (int i = 0; i < var->children[0]->val->dim; i++)
+    {
+        if (var->children[0]->val->shape[i] != var->grad->shape[i])
+        {
+            temp = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp;
+        }
+    }
+    var->children[0]->grad = add_ndarray_ndarray(reduced_grad, var->children[0]->grad);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 
     place_holder = var->children[1]->grad;
-    var->children[1]->grad = add_ndarray_ndarray(var->grad, var->children[1]->grad);
+    reduced_grad = copy_ndarray(var->grad);
+    for (int i = 0; i < var->children[1]->val->dim; i++)
+    {
+        if (var->children[1]->val->shape[i] != var->grad->shape[i])
+        {
+            temp = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp;
+        }
+    }
+    var->children[1]->grad = add_ndarray_ndarray(reduced_grad, var->children[1]->grad);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 }
 
 void subtract_backward(variable *var)
 {
     ndarray *place_holder;
+    ndarray *reduced_grad;
+    ndarray *temp;
 
     place_holder = var->children[0]->grad;
-    var->children[0]->grad = add_ndarray_ndarray(var->grad, var->children[0]->grad);
+    reduced_grad = copy_ndarray(var->grad);
+    for (int i = 0; i < var->children[0]->val->dim; i++)
+    {
+        if (var->children[0]->val->shape[i] != var->grad->shape[i])
+        {
+            temp = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp;
+        }
+    }
+    var->children[0]->grad = add_ndarray_ndarray(reduced_grad, var->children[0]->grad);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 
     place_holder = var->children[1]->grad;
-    var->children[1]->grad = subtract_ndarray_ndarray(var->children[1]->grad, var->grad);
+    reduced_grad = copy_ndarray(var->grad);
+    for (int i = 0; i < var->children[1]->val->dim; i++)
+    {
+        if (var->children[1]->val->shape[i] != var->grad->shape[i])
+        {
+            temp = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp;
+        }
+    }
+    var->children[1]->grad = subtract_ndarray_ndarray(var->children[1]->grad, reduced_grad);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 }
 
 void multiply_backward(variable *var)
 {
     ndarray *place_holder;
+    ndarray *reduced_grad;
     ndarray *temp;
 
     place_holder = var->children[0]->grad;
     temp = multiply_ndarray_ndarray(var->children[1]->val, var->grad);
-    var->children[0]->grad = add_ndarray_ndarray(temp, var->children[0]->grad);
+    reduced_grad = copy_ndarray(temp);
+    for (int i = 0; i < var->children[0]->val->dim; i++)
+    {
+        if (var->children[0]->val->shape[i] != temp->shape[i])
+        {
+            ndarray *temp2 = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp2;
+        }
+    }
+    var->children[0]->grad = add_ndarray_ndarray(reduced_grad, var->children[0]->grad);
     free_ndarray(&temp);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 
     place_holder = var->children[1]->grad;
     temp = multiply_ndarray_ndarray(var->children[0]->val, var->grad);
-    var->children[1]->grad = add_ndarray_ndarray(temp, var->children[1]->grad);
+    reduced_grad = copy_ndarray(temp);
+    for (int i = 0; i < var->children[1]->val->dim; i++)
+    {
+        if (var->children[1]->val->shape[i] != temp->shape[i])
+        {
+            ndarray *temp2 = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp2;
+        }
+    }
+    var->children[1]->grad = add_ndarray_ndarray(reduced_grad, var->children[1]->grad);
     free_ndarray(&temp);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 }
 
 void divide_backward(variable *var)
@@ -69,14 +140,26 @@ void divide_backward(variable *var)
     ndarray *place_holder;
     ndarray *temp0;
     ndarray *temp1;
+    ndarray *reduced_grad;
 
     place_holder = var->children[0]->grad;
     temp0 = divide_scalar_ndarray(var->children[1]->val, 1.0);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
-    var->children[0]->grad = add_ndarray_ndarray(temp1, var->children[0]->grad);
+    reduced_grad = copy_ndarray(temp1);
+    for (int i = 0; i < var->children[0]->val->dim; i++)
+    {
+        if (var->children[0]->val->shape[i] != temp1->shape[i])
+        {
+            ndarray *temp2 = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp2;
+        }
+    }
+    var->children[0]->grad = add_ndarray_ndarray(reduced_grad, var->children[0]->grad);
     free_ndarray(&temp0);
     free_ndarray(&temp1);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 
     place_holder = var->children[1]->grad;
     temp0 = multiply_ndarray_ndarray(var->children[1]->val, var->children[1]->val);
@@ -85,10 +168,21 @@ void divide_backward(variable *var)
     temp0 = multiply_ndarray_scalar(temp1, -1.0);
     free_ndarray(&temp1);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
-    var->children[1]->grad = add_ndarray_ndarray(temp1, var->children[1]->grad);
+    reduced_grad = copy_ndarray(temp1);
+    for (int i = 0; i < var->children[1]->val->dim; i++)
+    {
+        if (var->children[1]->val->shape[i] != temp1->shape[i])
+        {
+            ndarray *temp2 = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp2;
+        }
+    }
+    var->children[1]->grad = add_ndarray_ndarray(reduced_grad, var->children[1]->grad);
     free_ndarray(&temp0);
     free_ndarray(&temp1);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 }
 
 void power_backward(variable *var)
@@ -97,6 +191,7 @@ void power_backward(variable *var)
     ndarray *temp0;
     ndarray *temp1;
     ndarray *temp2;
+    ndarray *reduced_grad;
 
     place_holder = var->children[0]->grad;
     temp0 = subtract_ndarray_scalar(var->children[1]->val, 1);
@@ -105,10 +200,21 @@ void power_backward(variable *var)
     temp0 = multiply_ndarray_ndarray(var->children[1]->val, temp1);
     free_ndarray(&temp1);
     temp1 = multiply_ndarray_ndarray(temp0, var->grad);
-    var->children[0]->grad = add_ndarray_ndarray(temp1, var->children[0]->grad);
+    reduced_grad = copy_ndarray(temp1);
+    for (int i = 0; i < var->children[0]->val->dim; i++)
+    {
+        if (var->children[0]->val->shape[i] != temp1->shape[i])
+        {
+            ndarray *temp2 = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp2;
+        }
+    }
+    var->children[0]->grad = add_ndarray_ndarray(reduced_grad, var->children[0]->grad);
     free_ndarray(&temp0);
     free_ndarray(&temp1);
     free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
 
     place_holder = var->children[1]->grad;
     temp0 = log_ndarray(var->children[0]->val);
@@ -116,10 +222,46 @@ void power_backward(variable *var)
     free_ndarray(&temp0);
     temp2 = power_ndarray_ndarray(var->children[0]->val, var->children[1]->val);
     temp0 = multiply_ndarray_ndarray(temp2, temp1);
-    var->children[1]->grad = add_ndarray_ndarray(temp0, var->children[1]->grad);
+    reduced_grad = copy_ndarray(temp0);
+    for (int i = 0; i < var->children[1]->val->dim; i++)
+    {
+        if (var->children[1]->val->shape[i] != temp0->shape[i])
+        {
+            ndarray *temp3 = sum_ndarray(reduced_grad, i);
+            free_ndarray(&reduced_grad);
+            reduced_grad = temp3;
+        }
+    }
+    var->children[1]->grad = add_ndarray_ndarray(reduced_grad, var->children[1]->grad);
     free_ndarray(&temp0);
     free_ndarray(&temp1);
     free_ndarray(&temp2);
+    free_ndarray(&place_holder);
+    free_ndarray(&reduced_grad);
+}
+
+void exp_backward(variable *var)
+{
+    ndarray *place_holder;
+    ndarray *temp0;
+    ndarray *temp1;
+
+    place_holder = var->children[0]->grad;
+    temp0 = unary_op_ndarray(var->children[0]->val, exp);
+    temp1 = multiply_ndarray_ndarray(var->grad, temp0);
+    var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp1);
+    free_ndarray(&temp0);
+    free_ndarray(&temp1);
+    free_ndarray(&place_holder);
+}
+
+void sum_backward(variable *var)
+{
+    ndarray *place_holder;
+
+    place_holder = var->children[0]->grad;
+    var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, var->grad);
+
     free_ndarray(&place_holder);
 }
 
@@ -292,6 +434,36 @@ variable *power_variable(variable *var1, variable *var2)
     return var;
 }
 
+variable *exp_variable(variable *var)
+{
+    variable *n_var = (variable *)malloc(sizeof(variable));
+    n_var->val = unary_op_ndarray(var->val, exp);
+    n_var->grad = zeros_ndarray(n_var->val->dim, n_var->val->shape);
+    n_var->children = (variable **)malloc(sizeof(variable *));
+    n_var->children[0] = var;
+    n_var->n_children = 1;
+    n_var->backward = exp_backward;
+    n_var->ref_count = 0;
+    var->ref_count++;
+
+    return n_var;
+}
+
+variable *sum_variable(variable *var, int axis)
+{
+    variable *n_var = (variable *)malloc(sizeof(variable));
+    n_var->val = sum_ndarray(var->val, axis);
+    n_var->grad = zeros_ndarray(n_var->val->dim, n_var->val->shape);
+    n_var->children = (variable **)malloc(sizeof(variable *));
+    n_var->children[0] = var;
+    n_var->n_children = 1;
+    n_var->backward = sum_backward;
+    n_var->ref_count = 0;
+    var->ref_count++;
+
+    return n_var;
+}
+
 variable *relu_variable(variable *var)
 {
     variable *n_var = (variable *)malloc(sizeof(variable));
@@ -320,6 +492,18 @@ variable *sigmoid_variable(variable *var)
     var->ref_count++;
 
     return n_var;
+}
+
+variable *softmax_variable(variable *var, int axis)
+{
+    variable *exp_var = exp_variable(
+        subtract_variable(
+            var,
+            new_variable(full_ndarray(var->val->dim, var->val->shape, max_all_ndarray(var->val)))));
+
+    variable *sum_exp_var = sum_variable(exp_var, axis);
+
+    return divide_variable(exp_var, sum_exp_var);
 }
 
 variable *matmul_variable(variable *var1, variable *var2)

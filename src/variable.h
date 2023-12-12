@@ -25,9 +25,15 @@ variable *divide_variable(variable *var1, variable *var2);
 
 variable *power_variable(variable *var1, variable *var2);
 
+variable *exp_variable(variable *var);
+
+variable *sum_variable(variable* var, int axis);
+
 variable *relu_variable(variable *var);
 
 variable *sigmoid_variable(variable *var);
+
+variable *softmax_variable(variable *var, int axis);
 
 variable *matmul_variable(variable *var1, variable *var2);
 

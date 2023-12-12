@@ -90,13 +90,13 @@ static void test_forward_multilayer_perceptron(void **state)
 
     backward_variable(output);
 
-    assert_true(is_equal(output->val, output_val_gt));
-    assert_true(is_equal(mlp->weights[0]->grad, weights0_grad_gt));
-    assert_true(is_equal(mlp->weights[1]->grad, weights1_grad_gt));
-    assert_true(is_equal(mlp->weights[2]->grad, weights2_grad_gt));
-    assert_true(is_equal(mlp->bias[0]->grad, bias0_grad_gt));
-    assert_true(is_equal(mlp->bias[1]->grad, bias1_grad_gt));
-    assert_true(is_equal(mlp->bias[2]->grad, bias2_grad_gt));
+    assert_true(is_equal_ndarray(output->val, output_val_gt));
+    assert_true(is_equal_ndarray(mlp->weights[0]->grad, weights0_grad_gt));
+    assert_true(is_equal_ndarray(mlp->weights[1]->grad, weights1_grad_gt));
+    assert_true(is_equal_ndarray(mlp->weights[2]->grad, weights2_grad_gt));
+    assert_true(is_equal_ndarray(mlp->bias[0]->grad, bias0_grad_gt));
+    assert_true(is_equal_ndarray(mlp->bias[1]->grad, bias1_grad_gt));
+    assert_true(is_equal_ndarray(mlp->bias[2]->grad, bias2_grad_gt));
 
     free_ndarray(&input_val);
     free_ndarray(&output_val_gt);
