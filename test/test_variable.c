@@ -113,24 +113,24 @@ static void test_add_variable(void **state)
     backward_variable(var_c4_hat);
     backward_variable(var_c5_hat);
 
-    assert_true(is_equal_ndarray(var_c0_hat->val, c0));
-    assert_true(is_equal_ndarray(var_c1_hat->val, c1));
-    assert_true(is_equal_ndarray(var_c2_hat->val, c2));
-    assert_true(is_equal_ndarray(var_c3_hat->val, c3));
-    assert_true(is_equal_ndarray(var_c4_hat->val, c4));
-    assert_true(is_equal_ndarray(var_c5_hat->val, c5));
-    assert_true(is_equal_ndarray(var_a0->grad, a0_grad));
-    assert_true(is_equal_ndarray(var_a1->grad, a1_grad));
-    assert_true(is_equal_ndarray(var_a2->grad, a2_grad));
-    assert_true(is_equal_ndarray(var_a3->grad, a3_grad));
-    assert_true(is_equal_ndarray(var_a4->grad, a4_grad));
-    assert_true(is_equal_ndarray(var_a5->grad, a5_grad));
-    assert_true(is_equal_ndarray(var_b0->grad, b0_grad));
-    assert_true(is_equal_ndarray(var_b1->grad, b1_grad));
-    assert_true(is_equal_ndarray(var_b2->grad, b2_grad));
-    assert_true(is_equal_ndarray(var_b3->grad, b3_grad));
-    assert_true(is_equal_ndarray(var_b4->grad, b4_grad));
-    assert_true(is_equal_ndarray(var_b5->grad, b5_grad));
+    assert_true(is_equal_ndarray(var_c0_hat->val, c0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c1_hat->val, c1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c2_hat->val, c2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c3_hat->val, c3, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c4_hat->val, c4, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c5_hat->val, c5, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a0->grad, a0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a1->grad, a1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a2->grad, a2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a3->grad, a3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a4->grad, a4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a5->grad, a5_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b0->grad, b0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b1->grad, b1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b2->grad, b2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b3->grad, b3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b4->grad, b4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b5->grad, b5_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -248,24 +248,24 @@ static void test_subtract_variable(void **state)
     backward_variable(var_c4_hat);
     backward_variable(var_c5_hat);
 
-    assert_true(is_equal_ndarray(var_c0_hat->val, c0));
-    assert_true(is_equal_ndarray(var_c1_hat->val, c1));
-    assert_true(is_equal_ndarray(var_c2_hat->val, c2));
-    assert_true(is_equal_ndarray(var_c3_hat->val, c3));
-    assert_true(is_equal_ndarray(var_c4_hat->val, c4));
-    assert_true(is_equal_ndarray(var_c5_hat->val, c5));
-    assert_true(is_equal_ndarray(var_a0->grad, a0_grad));
-    assert_true(is_equal_ndarray(var_a1->grad, a1_grad));
-    assert_true(is_equal_ndarray(var_a2->grad, a2_grad));
-    assert_true(is_equal_ndarray(var_a3->grad, a3_grad));
-    assert_true(is_equal_ndarray(var_a4->grad, a4_grad));
-    assert_true(is_equal_ndarray(var_a5->grad, a5_grad));
-    assert_true(is_equal_ndarray(var_b0->grad, b0_grad));
-    assert_true(is_equal_ndarray(var_b1->grad, b1_grad));
-    assert_true(is_equal_ndarray(var_b2->grad, b2_grad));
-    assert_true(is_equal_ndarray(var_b3->grad, b3_grad));
-    assert_true(is_equal_ndarray(var_b4->grad, b4_grad));
-    assert_true(is_equal_ndarray(var_b5->grad, b5_grad));
+    assert_true(is_equal_ndarray(var_c0_hat->val, c0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c1_hat->val, c1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c2_hat->val, c2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c3_hat->val, c3, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c4_hat->val, c4, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c5_hat->val, c5, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a0->grad, a0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a1->grad, a1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a2->grad, a2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a3->grad, a3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a4->grad, a4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a5->grad, a5_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b0->grad, b0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b1->grad, b1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b2->grad, b2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b3->grad, b3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b4->grad, b4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b5->grad, b5_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -383,24 +383,24 @@ static void test_multiply_variable(void **state)
     backward_variable(var_c4_hat);
     backward_variable(var_c5_hat);
 
-    assert_true(is_equal_ndarray(var_c0_hat->val, c0));
-    assert_true(is_equal_ndarray(var_c1_hat->val, c1));
-    assert_true(is_equal_ndarray(var_c2_hat->val, c2));
-    assert_true(is_equal_ndarray(var_c3_hat->val, c3));
-    assert_true(is_equal_ndarray(var_c4_hat->val, c4));
-    assert_true(is_equal_ndarray(var_c5_hat->val, c5));
-    assert_true(is_equal_ndarray(var_a0->grad, a0_grad));
-    assert_true(is_equal_ndarray(var_a1->grad, a1_grad));
-    assert_true(is_equal_ndarray(var_a2->grad, a2_grad));
-    assert_true(is_equal_ndarray(var_a3->grad, a3_grad));
-    assert_true(is_equal_ndarray(var_a4->grad, a4_grad));
-    assert_true(is_equal_ndarray(var_a5->grad, a5_grad));
-    assert_true(is_equal_ndarray(var_b0->grad, b0_grad));
-    assert_true(is_equal_ndarray(var_b1->grad, b1_grad));
-    assert_true(is_equal_ndarray(var_b2->grad, b2_grad));
-    assert_true(is_equal_ndarray(var_b3->grad, b3_grad));
-    assert_true(is_equal_ndarray(var_b4->grad, b4_grad));
-    assert_true(is_equal_ndarray(var_b5->grad, b5_grad));
+    assert_true(is_equal_ndarray(var_c0_hat->val, c0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c1_hat->val, c1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c2_hat->val, c2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c3_hat->val, c3, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c4_hat->val, c4, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c5_hat->val, c5, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a0->grad, a0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a1->grad, a1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a2->grad, a2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a3->grad, a3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a4->grad, a4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a5->grad, a5_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b0->grad, b0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b1->grad, b1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b2->grad, b2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b3->grad, b3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b4->grad, b4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b5->grad, b5_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -518,24 +518,24 @@ static void test_divide_variable(void **state)
     backward_variable(var_c4_hat);
     backward_variable(var_c5_hat);
 
-    assert_true(is_equal_ndarray(var_c0_hat->val, c0));
-    assert_true(is_equal_ndarray(var_c1_hat->val, c1));
-    assert_true(is_equal_ndarray(var_c2_hat->val, c2));
-    assert_true(is_equal_ndarray(var_c3_hat->val, c3));
-    assert_true(is_equal_ndarray(var_c4_hat->val, c4));
-    assert_true(is_equal_ndarray(var_c5_hat->val, c5));
-    assert_true(is_equal_ndarray(var_a0->grad, a0_grad));
-    assert_true(is_equal_ndarray(var_a1->grad, a1_grad));
-    assert_true(is_equal_ndarray(var_a2->grad, a2_grad));
-    assert_true(is_equal_ndarray(var_a3->grad, a3_grad));
-    assert_true(is_equal_ndarray(var_a4->grad, a4_grad));
-    assert_true(is_equal_ndarray(var_a5->grad, a5_grad));
-    assert_true(is_equal_ndarray(var_b0->grad, b0_grad));
-    assert_true(is_equal_ndarray(var_b1->grad, b1_grad));
-    assert_true(is_equal_ndarray(var_b2->grad, b2_grad));
-    assert_true(is_equal_ndarray(var_b3->grad, b3_grad));
-    assert_true(is_equal_ndarray(var_b4->grad, b4_grad));
-    assert_true(is_equal_ndarray(var_b5->grad, b5_grad));
+    assert_true(is_equal_ndarray(var_c0_hat->val, c0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c1_hat->val, c1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c2_hat->val, c2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c3_hat->val, c3, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c4_hat->val, c4, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c5_hat->val, c5, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a0->grad, a0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a1->grad, a1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a2->grad, a2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a3->grad, a3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a4->grad, a4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a5->grad, a5_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b0->grad, b0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b1->grad, b1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b2->grad, b2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b3->grad, b3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b4->grad, b4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b5->grad, b5_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -653,24 +653,24 @@ static void test_power_variable(void **state)
     backward_variable(var_c4_hat);
     backward_variable(var_c5_hat);
 
-    assert_true(is_equal_ndarray(var_c0_hat->val, c0));
-    assert_true(is_equal_ndarray(var_c1_hat->val, c1));
-    assert_true(is_equal_ndarray(var_c2_hat->val, c2));
-    assert_true(is_equal_ndarray(var_c3_hat->val, c3));
-    assert_true(is_equal_ndarray(var_c4_hat->val, c4));
-    assert_true(is_equal_ndarray(var_c5_hat->val, c5));
-    assert_true(is_equal_ndarray(var_a0->grad, a0_grad));
-    assert_true(is_equal_ndarray(var_a1->grad, a1_grad));
-    assert_true(is_equal_ndarray(var_a2->grad, a2_grad));
-    assert_true(is_equal_ndarray(var_a3->grad, a3_grad));
-    assert_true(is_equal_ndarray(var_a4->grad, a4_grad));
-    assert_true(is_equal_ndarray(var_a5->grad, a5_grad));
-    assert_true(is_equal_ndarray(var_b0->grad, b0_grad));
-    assert_true(is_equal_ndarray(var_b1->grad, b1_grad));
-    assert_true(is_equal_ndarray(var_b2->grad, b2_grad));
-    assert_true(is_equal_ndarray(var_b3->grad, b3_grad));
-    assert_true(is_equal_ndarray(var_b4->grad, b4_grad));
-    assert_true(is_equal_ndarray(var_b5->grad, b5_grad));
+    assert_true(is_equal_ndarray(var_c0_hat->val, c0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c1_hat->val, c1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c2_hat->val, c2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c3_hat->val, c3, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c4_hat->val, c4, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c5_hat->val, c5, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a0->grad, a0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a1->grad, a1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a2->grad, a2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a3->grad, a3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a4->grad, a4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a5->grad, a5_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b0->grad, b0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b1->grad, b1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b2->grad, b2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b3->grad, b3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b4->grad, b4_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b5->grad, b5_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -744,12 +744,12 @@ static void test_exp_variable(void **state)
     backward_variable(var_y1_hat);
     backward_variable(var_y2_hat);
 
-    assert_true(is_equal_ndarray(var_y0_hat->val, y0));
-    assert_true(is_equal_ndarray(var_y1_hat->val, y1));
-    assert_true(is_equal_ndarray(var_y2_hat->val, y2));
-    assert_true(is_equal_ndarray(var_x0->grad, x0_grad));
-    assert_true(is_equal_ndarray(var_x1->grad, x1_grad));
-    assert_true(is_equal_ndarray(var_x2->grad, x2_grad));
+    assert_true(is_equal_ndarray(var_y0_hat->val, y0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y1_hat->val, y1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y2_hat->val, y2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x0->grad, x0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x1->grad, x1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x2->grad, x2_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x0);
     free_ndarray(&x1);
@@ -799,12 +799,12 @@ static void test_relu_variable(void **state)
     backward_variable(var_y1_hat);
     backward_variable(var_y2_hat);
 
-    assert_true(is_equal_ndarray(var_y0_hat->val, y0));
-    assert_true(is_equal_ndarray(var_y1_hat->val, y1));
-    assert_true(is_equal_ndarray(var_y2_hat->val, y2));
-    assert_true(is_equal_ndarray(var_x0->grad, x0_grad));
-    assert_true(is_equal_ndarray(var_x1->grad, x1_grad));
-    assert_true(is_equal_ndarray(var_x2->grad, x2_grad));
+    assert_true(is_equal_ndarray(var_y0_hat->val, y0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y1_hat->val, y1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y2_hat->val, y2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x0->grad, x0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x1->grad, x1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x2->grad, x2_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x0);
     free_ndarray(&x1);
@@ -854,12 +854,12 @@ static void test_sum_variable(void **state)
     backward_variable(var_y1_hat);
     backward_variable(var_y2_hat);
 
-    assert_true(is_equal_ndarray(var_y0_hat->val, y0));
-    assert_true(is_equal_ndarray(var_y1_hat->val, y1));
-    assert_true(is_equal_ndarray(var_y2_hat->val, y2));
-    assert_true(is_equal_ndarray(var_x0->grad, x0_grad));
-    assert_true(is_equal_ndarray(var_x1->grad, x1_grad));
-    assert_true(is_equal_ndarray(var_x2->grad, x2_grad));
+    assert_true(is_equal_ndarray(var_y0_hat->val, y0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y1_hat->val, y1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y2_hat->val, y2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x0->grad, x0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x1->grad, x1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x2->grad, x2_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x0);
     free_ndarray(&x1);
@@ -909,12 +909,12 @@ static void test_sigmoid_variable(void **state)
     backward_variable(var_y1_hat);
     backward_variable(var_y2_hat);
 
-    assert_true(is_equal_ndarray(var_y0_hat->val, y0));
-    assert_true(is_equal_ndarray(var_y1_hat->val, y1));
-    assert_true(is_equal_ndarray(var_y2_hat->val, y2));
-    assert_true(is_equal_ndarray(var_x0->grad, x0_grad));
-    assert_true(is_equal_ndarray(var_x1->grad, x1_grad));
-    assert_true(is_equal_ndarray(var_x2->grad, x2_grad));
+    assert_true(is_equal_ndarray(var_y0_hat->val, y0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y1_hat->val, y1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y2_hat->val, y2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x0->grad, x0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x1->grad, x1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x2->grad, x2_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x0);
     free_ndarray(&x1);
@@ -964,12 +964,12 @@ static void test_softmax_variable(void **state)
     backward_variable(var_y1_hat);
     backward_variable(var_y2_hat);
 
-    assert_true(is_equal_ndarray(var_y0_hat->val, y0));
-    assert_true(is_equal_ndarray(var_y1_hat->val, y1));
-    assert_true(is_equal_ndarray(var_y2_hat->val, y2));
-    assert_true(is_equal_ndarray(var_x0->grad, x0_grad));
-    assert_true(is_equal_ndarray(var_x1->grad, x1_grad));
-    assert_true(is_equal_ndarray(var_x2->grad, x2_grad));
+    assert_true(is_equal_ndarray(var_y0_hat->val, y0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y1_hat->val, y1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_y2_hat->val, y2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x0->grad, x0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x1->grad, x1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_x2->grad, x2_grad, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x0);
     free_ndarray(&x1);
@@ -986,74 +986,133 @@ static void test_softmax_variable(void **state)
     free_variable(&var_y2_hat);
 }
 
-/*
-
-
 static void test_matmul_variable(void **state)
 {
     (void)state;
+    ndarray *a0 = read_ndarray("./test_data/test_variable/test_matmul_variable/a0.txt");
+    ndarray *a1 = read_ndarray("./test_data/test_variable/test_matmul_variable/a1.txt");
+    ndarray *a2 = read_ndarray("./test_data/test_variable/test_matmul_variable/a2.txt");
+    ndarray *a3 = read_ndarray("./test_data/test_variable/test_matmul_variable/a3.txt");
+    ndarray *b0 = read_ndarray("./test_data/test_variable/test_matmul_variable/b0.txt");
+    ndarray *b1 = read_ndarray("./test_data/test_variable/test_matmul_variable/b1.txt");
+    ndarray *b2 = read_ndarray("./test_data/test_variable/test_matmul_variable/b2.txt");
+    ndarray *b3 = read_ndarray("./test_data/test_variable/test_matmul_variable/b3.txt");
+    ndarray *c0 = read_ndarray("./test_data/test_variable/test_matmul_variable/c0.txt");
+    ndarray *c1 = read_ndarray("./test_data/test_variable/test_matmul_variable/c1.txt");
+    ndarray *c2 = read_ndarray("./test_data/test_variable/test_matmul_variable/c2.txt");
+    ndarray *c3 = read_ndarray("./test_data/test_variable/test_matmul_variable/c3.txt");
+    ndarray *d0 = read_ndarray("./test_data/test_variable/test_matmul_variable/d0.txt");
+    ndarray *d1 = read_ndarray("./test_data/test_variable/test_matmul_variable/d1.txt");
+    ndarray *d2 = read_ndarray("./test_data/test_variable/test_matmul_variable/d2.txt");
+    ndarray *d3 = read_ndarray("./test_data/test_variable/test_matmul_variable/d3.txt");
+    ndarray *a0_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/a0_grad.txt");
+    ndarray *a1_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/a1_grad.txt");
+    ndarray *a2_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/a2_grad.txt");
+    ndarray *a3_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/a3_grad.txt");
+    ndarray *b0_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/b0_grad.txt");
+    ndarray *b1_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/b1_grad.txt");
+    ndarray *b2_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/b2_grad.txt");
+    ndarray *b3_grad = read_ndarray("./test_data/test_variable/test_matmul_variable/b3_grad.txt");
 
-    ndarray *val1 = read_ndarray("./test_data/test_matmul_variable_var1_val.txt");
-    ndarray *val2 = read_ndarray("./test_data/test_matmul_variable_var2_val.txt");
-    ndarray *var_val_gt = read_ndarray("./test_data/test_matmul_variable_var_val.txt");
-    ndarray *up_stream_grad = read_ndarray("./test_data/test_matmul_variable_up_stream_grad.txt");
-    ndarray *var1_grad_gt = read_ndarray("./test_data/test_matmul_variable_var1_grad.txt");
-    ndarray *var2_grad_gt = read_ndarray("./test_data/test_matmul_variable_var2_grad.txt");
+    variable *var_a0 = new_variable(a0);
+    variable *var_a1 = new_variable(a1);
+    variable *var_a2 = new_variable(a2);
+    variable *var_a3 = new_variable(a3);
+    variable *var_b0 = new_variable(b0);
+    variable *var_b1 = new_variable(b1);
+    variable *var_b2 = new_variable(b2);
+    variable *var_b3 = new_variable(b3);
+    variable *var_c0_hat = matmul_variable(var_a0, var_b0);
+    variable *var_c1_hat = matmul_variable(var_a1, var_b1);
+    variable *var_c2_hat = matmul_variable(var_a2, var_b2);
+    variable *var_c3_hat = matmul_variable(var_a3, var_b3);
+    free_ndarray(&(var_c0_hat->grad));
+    free_ndarray(&(var_c1_hat->grad));
+    free_ndarray(&(var_c2_hat->grad));
+    free_ndarray(&(var_c3_hat->grad));
+    var_c0_hat->grad = d0;
+    var_c1_hat->grad = d1;
+    var_c2_hat->grad = d2;
+    var_c3_hat->grad = d3;
+    backward_variable(var_c0_hat);
+    backward_variable(var_c1_hat);
+    backward_variable(var_c2_hat);
+    backward_variable(var_c3_hat);
 
-    variable *var2 = new_variable(val2);
-    variable *var1 = new_variable(val1);
-    variable *var = matmul_variable(var1, var2);
+    assert_true(is_equal_ndarray(var_c0_hat->val, c0, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c1_hat->val, c1, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c2_hat->val, c2, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c3_hat->val, c3, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a0->grad, a0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a1->grad, a1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a2->grad, a2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a3->grad, a3_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b0->grad, b0_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b1->grad, b1_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b2->grad, b2_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b3->grad, b3_grad, NDARRAY_TYPE_EPSILON));
 
-    free_ndarray(&(var->grad));
-    var->grad = up_stream_grad;
-    backward_variable(var);
+    free_ndarray(&a0);
+    free_ndarray(&a1);
+    free_ndarray(&a2);
+    free_ndarray(&a3);
+    free_ndarray(&b0);
+    free_ndarray(&b1);
+    free_ndarray(&b2);
+    free_ndarray(&b3);
+    free_ndarray(&c0);
+    free_ndarray(&c1);
+    free_ndarray(&c2);
+    free_ndarray(&c3);
+    free_ndarray(&a0_grad);
+    free_ndarray(&a1_grad);
+    free_ndarray(&a2_grad);
+    free_ndarray(&a3_grad);
+    free_ndarray(&b0_grad);
+    free_ndarray(&b1_grad);
+    free_ndarray(&b2_grad);
+    free_ndarray(&b3_grad);
 
-    assert_true(is_equal_ndarray(var->val, var_val_gt));
-    assert_true(is_equal_ndarray(var1->grad, var1_grad_gt));
-    assert_true(is_equal_ndarray(var2->grad, var2_grad_gt));
-
-    free_ndarray(&val1);
-    free_ndarray(&val2);
-    free_ndarray(&var_val_gt);
-    free_ndarray(&var1_grad_gt);
-    free_ndarray(&var2_grad_gt);
-
-    free_variable(&var);
+    free_variable(&var_c0_hat);
+    free_variable(&var_c1_hat);
+    free_variable(&var_c2_hat);
+    free_variable(&var_c3_hat);
 }
-
 
 static void test_backward_variable(void **state)
 {
     (void)state;
+    ndarray *a = read_ndarray("./test_data/test_variable/test_backward_variable/a.txt");
+    ndarray *b = read_ndarray("./test_data/test_variable/test_backward_variable/b.txt");
+    ndarray *c = read_ndarray("./test_data/test_variable/test_backward_variable/c.txt");
+    ndarray *d = read_ndarray("./test_data/test_variable/test_backward_variable/d.txt");
+    ndarray *e = read_ndarray("./test_data/test_variable/test_backward_variable/e.txt");
+    ndarray *a_grad = read_ndarray("./test_data/test_variable/test_backward_variable/a_grad.txt");
+    ndarray *b_grad = read_ndarray("./test_data/test_variable/test_backward_variable/b_grad.txt");
+    ndarray *c_grad = read_ndarray("./test_data/test_variable/test_backward_variable/c_grad.txt");
 
-    ndarray *a_val = read_ndarray("./test_data/test_backward_a_val.txt");
-    ndarray *b_val = read_ndarray("./test_data/test_backward_b_val.txt");
-    ndarray *c_val_gt = read_ndarray("./test_data/test_backward_c_val.txt");
-    ndarray *up_stream_grad = read_ndarray("./test_data/test_backward_up_stream_grad.txt");
-    ndarray *a_grad_gt = read_ndarray("./test_data/test_backward_a_grad.txt");
-    ndarray *b_grad_gt = read_ndarray("./test_data/test_backward_b_grad.txt");
+    variable *var_a = new_variable(a);
+    variable *var_b = new_variable(b);
+    variable *var_c = new_variable(c);
+    variable *var_d_hat = add_variable(multiply_variable(var_a, add_variable(multiply_variable(var_a, var_b), var_c)), var_c);
+    free_ndarray(&(var_d_hat->grad));
+    var_d_hat->grad = e;
+    backward_variable(var_d_hat);
 
-    variable *a = new_variable(a_val);
-    variable *b = new_variable(b_val);
-    variable *c = add_variable(b, multiply_variable(a, add_variable(a, b)));
+    assert_true(is_equal_ndarray(var_d_hat->val, d, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_a->grad, a_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_b->grad, b_grad, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(var_c->grad, c_grad, NDARRAY_TYPE_EPSILON));
 
-    free_ndarray(&(c->grad));
-    c->grad = up_stream_grad;
-    backward_variable(c);
-
-    assert_true(is_equal_ndarray(c->val, c_val_gt));
-    assert_true(is_equal_ndarray(a->grad, a_grad_gt));
-    assert_true(is_equal_ndarray(b->grad, b_grad_gt));
-
-    free_ndarray(&a_val);
-    free_ndarray(&b_val);
-    free_ndarray(&a_grad_gt);
-    free_ndarray(&b_grad_gt);
-    free_ndarray(&c_val_gt);
-
-    free_variable(&c);
+    free_ndarray(&a);
+    free_ndarray(&b);
+    free_ndarray(&c);
+    free_ndarray(&d);
+    free_ndarray(&a_grad);
+    free_ndarray(&b_grad);
+    free_ndarray(&c_grad);
+    free_variable(&var_d_hat);
 }
-*/
 
 int main(void)
 {
@@ -1069,10 +1128,8 @@ int main(void)
         cmocka_unit_test(test_sum_variable),
         cmocka_unit_test(test_sigmoid_variable),
         cmocka_unit_test(test_softmax_variable),
-        /*
         cmocka_unit_test(test_matmul_variable),
         cmocka_unit_test(test_backward_variable),
-        */
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

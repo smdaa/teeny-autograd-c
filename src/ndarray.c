@@ -154,7 +154,7 @@ ndarray *read_ndarray(const char *filename)
     return arr;
 }
 
-bool is_equal_ndarray(ndarray *arr1, ndarray *arr2)
+bool is_equal_ndarray(ndarray *arr1, ndarray *arr2, double tolerance)
 {
     if (arr1->dim != arr2->dim || arr1->size != arr2->size)
     {
@@ -169,7 +169,7 @@ bool is_equal_ndarray(ndarray *arr1, ndarray *arr2)
     }
     for (int i = 0; i < arr1->size; i++)
     {
-        if (fabs(arr1->data[i] - arr2->data[i]) > NDARRAY_TYPE_EPSILON * fmax(fabs(arr1->data[i]), fabs(arr2->data[i])))
+        if (fabs(arr1->data[i] - arr2->data[i]) > tolerance * fmax(fabs(arr1->data[i]), fabs(arr2->data[i])))
         {
             return false;
         }

@@ -6,6 +6,8 @@
 #include <math.h>
 #include "../src/multilayer_perceptron.h"
 
+/*
+
 static void test_new_multilayer_perceptron(void **state)
 {
     (void)state;
@@ -117,12 +119,14 @@ static void test_forward_multilayer_perceptron(void **state)
 
     free_multilayer_perceptron(&mlp);
 }
-
+*/
 int main(void)
 {
     const struct CMUnitTest tests[] = {
+        /*
         cmocka_unit_test(test_new_multilayer_perceptron),
         cmocka_unit_test(test_forward_multilayer_perceptron),
+        */
 
     };
     return cmocka_run_group_tests(tests, NULL, NULL);

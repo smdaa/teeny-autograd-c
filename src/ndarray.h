@@ -6,7 +6,7 @@
 #define NDARRAY_TYPE double
 #define NDARRAY_TYPE_MIN DBL_MIN
 #define NDARRAY_TYPE_MAX DBL_MAX
-#define NDARRAY_TYPE_EPSILON FLT_EPSILON
+#define NDARRAY_TYPE_EPSILON 1E-10
 
 typedef struct ndarray
 {
@@ -32,7 +32,7 @@ ndarray *random_ndrray(int dim, int *shape);
 
 ndarray *read_ndarray(const char *filename);
 
-bool is_equal_ndarray(ndarray *arr1, ndarray *arr2);
+bool is_equal_ndarray(ndarray *arr1, ndarray *arr2, double tolerance);
 
 ndarray *unary_op_ndarray(ndarray *arr, NDARRAY_TYPE (*op)(NDARRAY_TYPE));
 

@@ -189,9 +189,9 @@ static void test_is_equal(void **state)
     ndarray arr5 = {2, 4, (int[]){2, 2}, (NDARRAY_TYPE[]){1, 2, 3, 4}};
     ndarray arr6 = {2, 4, (int[]){2, 2}, (NDARRAY_TYPE[]){1, 2, 5, 4}};
 
-    assert_true(is_equal_ndarray(&arr1, &arr2));
-    assert_false(is_equal_ndarray(&arr3, &arr4));
-    assert_false(is_equal_ndarray(&arr5, &arr6));
+    assert_true(is_equal_ndarray(&arr1, &arr2, NDARRAY_TYPE_EPSILON));
+    assert_false(is_equal_ndarray(&arr3, &arr4, NDARRAY_TYPE_EPSILON));
+    assert_false(is_equal_ndarray(&arr5, &arr6, NDARRAY_TYPE_EPSILON));
 }
 
 static void test_unary_op_ndarray(void **state)
@@ -202,7 +202,7 @@ static void test_unary_op_ndarray(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_unary_op_ndarray/y.txt");
     ndarray *y_hat = unary_op_ndarray(x, sin);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -217,7 +217,7 @@ static void test_log_ndarray(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_log_ndarray/y.txt");
     ndarray *y_hat = log_ndarray(x);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -232,7 +232,7 @@ static void test_add_ndarray_scalar(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_add_ndarray_scalar/y.txt");
     ndarray *y_hat = add_ndarray_scalar(x, 10);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -247,7 +247,7 @@ static void test_subtract_ndarray_scalar(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_subtract_ndarray_scalar/y.txt");
     ndarray *y_hat = subtract_ndarray_scalar(x, 10);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -262,7 +262,7 @@ static void test_multiply_ndarray_scalar(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_multiply_ndarray_scalar/y.txt");
     ndarray *y_hat = multiply_ndarray_scalar(x, 10);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -277,7 +277,7 @@ static void test_divide_ndarray_scalar(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_divide_ndarray_scalar/y.txt");
     ndarray *y_hat = divide_ndarray_scalar(x, 10);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -292,7 +292,7 @@ static void test_divide_scalar_ndarray(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_divide_scalar_ndarray/y.txt");
     ndarray *y_hat = divide_scalar_ndarray(x, 10);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -307,7 +307,7 @@ static void test_power_ndarray_scalar(void **state)
     ndarray *y = read_ndarray("./test_data/test_ndarray/test_power_ndarray_scalar/y.txt");
     ndarray *y_hat = power_ndarray_scalar(x, 2);
 
-    assert_true(is_equal_ndarray(y, y_hat));
+    assert_true(is_equal_ndarray(y, y_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y);
@@ -343,12 +343,12 @@ static void test_binary_op_ndarray(void **state)
     ndarray *c4_hat = binary_op_ndarray(a4, b4, fmax);
     ndarray *c5_hat = binary_op_ndarray(a5, b5, fmax);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
-    assert_true(is_equal_ndarray(c4, c4_hat));
-    assert_true(is_equal_ndarray(c5, c5_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c4, c4_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c5, c5_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -405,12 +405,12 @@ static void test_add_ndarray_ndarray(void **state)
     ndarray *c4_hat = add_ndarray_ndarray(a4, b4);
     ndarray *c5_hat = add_ndarray_ndarray(a5, b5);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
-    assert_true(is_equal_ndarray(c4, c4_hat));
-    assert_true(is_equal_ndarray(c5, c5_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c4, c4_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c5, c5_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -467,12 +467,12 @@ static void test_subtract_ndarray_ndarray(void **state)
     ndarray *c4_hat = subtract_ndarray_ndarray(a4, b4);
     ndarray *c5_hat = subtract_ndarray_ndarray(a5, b5);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
-    assert_true(is_equal_ndarray(c4, c4_hat));
-    assert_true(is_equal_ndarray(c5, c5_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c4, c4_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c5, c5_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -529,12 +529,12 @@ static void test_multiply_ndarray_ndarray(void **state)
     ndarray *c4_hat = multiply_ndarray_ndarray(a4, b4);
     ndarray *c5_hat = multiply_ndarray_ndarray(a5, b5);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
-    assert_true(is_equal_ndarray(c4, c4_hat));
-    assert_true(is_equal_ndarray(c5, c5_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c4, c4_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c5, c5_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -591,12 +591,12 @@ static void test_divide_ndarray_ndarray(void **state)
     ndarray *c4_hat = divide_ndarray_ndarray(a4, b4);
     ndarray *c5_hat = divide_ndarray_ndarray(a5, b5);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
-    assert_true(is_equal_ndarray(c4, c4_hat));
-    assert_true(is_equal_ndarray(c5, c5_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c4, c4_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c5, c5_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -653,12 +653,12 @@ static void test_power_ndarray_ndarray(void **state)
     ndarray *c4_hat = power_ndarray_ndarray(a4, b4);
     ndarray *c5_hat = power_ndarray_ndarray(a5, b5);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
-    assert_true(is_equal_ndarray(c4, c4_hat));
-    assert_true(is_equal_ndarray(c5, c5_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c4, c4_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c5, c5_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -707,10 +707,10 @@ static void test_matmul_ndarray(void **state)
     ndarray *c2_hat = matmul_ndarray(a2, b2);
     ndarray *c3_hat = matmul_ndarray(a3, b3);
 
-    assert_true(is_equal_ndarray(c0, c0_hat));
-    assert_true(is_equal_ndarray(c1, c1_hat));
-    assert_true(is_equal_ndarray(c2, c2_hat));
-    assert_true(is_equal_ndarray(c3, c3_hat));
+    assert_true(is_equal_ndarray(c0, c0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c1, c1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c2, c2_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(c3, c3_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&a0);
     free_ndarray(&a1);
@@ -742,9 +742,9 @@ static void test_transpose_ndarray(void **state)
     ndarray *y1_hat = transpose_ndarray(x, (int[]){2, 1, 0});
     ndarray *y2_hat = transpose_ndarray(x, (int[]){0, 2, 1});
 
-    assert_true(is_equal_ndarray(y0, y0_hat));
-    assert_true(is_equal_ndarray(y1, y1_hat));
-    assert_true(is_equal_ndarray(y2, y2_hat));
+    assert_true(is_equal_ndarray(y0, y0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y1, y1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y2, y2_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y0);
@@ -767,9 +767,9 @@ static void test_max_ndarray(void **state)
     ndarray *y1_hat = max_ndarray(x, 1);
     ndarray *y2_hat = max_ndarray(x, 2);
 
-    assert_true(is_equal_ndarray(y0, y0_hat));
-    assert_true(is_equal_ndarray(y1, y1_hat));
-    assert_true(is_equal_ndarray(y2, y2_hat));
+    assert_true(is_equal_ndarray(y0, y0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y1, y1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y2, y2_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y0);
@@ -792,9 +792,9 @@ static void test_min_ndarray(void **state)
     ndarray *y1_hat = min_ndarray(x, 1);
     ndarray *y2_hat = min_ndarray(x, 2);
 
-    assert_true(is_equal_ndarray(y0, y0_hat));
-    assert_true(is_equal_ndarray(y1, y1_hat));
-    assert_true(is_equal_ndarray(y2, y2_hat));
+    assert_true(is_equal_ndarray(y0, y0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y1, y1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y2, y2_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y0);
@@ -817,9 +817,9 @@ static void test_sum_ndarray(void **state)
     ndarray *y1_hat = sum_ndarray(x, 1);
     ndarray *y2_hat = sum_ndarray(x, 2);
 
-    assert_true(is_equal_ndarray(y0, y0_hat));
-    assert_true(is_equal_ndarray(y1, y1_hat));
-    assert_true(is_equal_ndarray(y2, y2_hat));
+    assert_true(is_equal_ndarray(y0, y0_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y1, y1_hat, NDARRAY_TYPE_EPSILON));
+    assert_true(is_equal_ndarray(y2, y2_hat, NDARRAY_TYPE_EPSILON));
 
     free_ndarray(&x);
     free_ndarray(&y0);

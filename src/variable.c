@@ -496,13 +496,8 @@ variable *sigmoid_variable(variable *var)
 
 variable *softmax_variable(variable *var, int axis)
 {
-    variable *exp_var = exp_variable(
-        subtract_variable(
-            var,
-            new_variable(full_ndarray(var->val->dim, var->val->shape, max_all_ndarray(var->val)))));
-
+    variable *exp_var = exp_variable(var);
     variable *sum_exp_var = sum_variable(exp_var, axis);
-
     return divide_variable(exp_var, sum_exp_var);
 }
 
