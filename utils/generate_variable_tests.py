@@ -494,6 +494,34 @@ save_ndarray_to_file(os.path.join(dir, "y2.txt"), y2.detach().numpy())
 save_ndarray_to_file(os.path.join(dir, "z2.txt"), z2.detach().numpy())
 save_ndarray_to_file(os.path.join(dir, "x2_grad.txt"), x2.grad.detach().numpy())
 
+test = "test_tanh_variable"
+dir = f"../test/test_data/test_variable/{test}/"
+n = 10
+x0 = torch.rand(n, n, dtype=torch.double, requires_grad=True)
+z0 = torch.rand(n, n, dtype=torch.double, requires_grad=True)
+y0 = torch.tanh(x0)
+y0.backward(z0)
+save_ndarray_to_file(os.path.join(dir, "x0.txt"), x0.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "y0.txt"), y0.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "z0.txt"), z0.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "x0_grad.txt"), x0.grad.detach().numpy())
+x1 = torch.rand(n // 2, n, dtype=torch.double, requires_grad=True)
+z1 = torch.rand(n // 2, n, dtype=torch.double, requires_grad=True)
+y1 = torch.tanh(x1)
+y1.backward(z1)
+save_ndarray_to_file(os.path.join(dir, "x1.txt"), x1.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "y1.txt"), y1.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "z1.txt"), z1.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "x1_grad.txt"), x1.grad.detach().numpy())
+x2 = torch.rand(n // 2, n, dtype=torch.double, requires_grad=True)
+z2 = torch.rand(n // 2, n, dtype=torch.double, requires_grad=True)
+y2 = torch.tanh(x2)
+y2.backward(z2)
+save_ndarray_to_file(os.path.join(dir, "x2.txt"), x2.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "y2.txt"), y2.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "z2.txt"), z2.detach().numpy())
+save_ndarray_to_file(os.path.join(dir, "x2_grad.txt"), x2.grad.detach().numpy())
+
 test = "test_matmul_variable"
 dir = f"../test/test_data/test_variable/{test}/"
 n = 10

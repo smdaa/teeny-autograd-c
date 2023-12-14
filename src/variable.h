@@ -3,14 +3,13 @@
 #ifndef TEENY_AUTOGRAD_C_VARIABLE_H
 #define TEENY_AUTOGRAD_C_VARIABLE_H
 
-typedef struct variable
-{
-    ndarray *val;
-    ndarray *grad;
-    struct variable **children;
-    int n_children;
-    void (*backward)(struct variable *);
-    int ref_count;
+typedef struct variable {
+  ndarray *val;
+  ndarray *grad;
+  struct variable **children;
+  int n_children;
+  void (*backward)(struct variable *);
+  int ref_count;
 } variable;
 
 variable *new_variable(ndarray *val);
@@ -27,13 +26,15 @@ variable *power_variable(variable *var1, variable *var2);
 
 variable *exp_variable(variable *var);
 
-variable *sum_variable(variable* var, int axis);
+variable *sum_variable(variable *var, int axis);
 
 variable *relu_variable(variable *var);
 
 variable *sigmoid_variable(variable *var);
 
 variable *softmax_variable(variable *var, int axis);
+
+variable *tanh_variable(variable *var);
 
 variable *matmul_variable(variable *var1, variable *var2);
 
