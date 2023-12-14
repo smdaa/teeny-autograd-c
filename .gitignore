@@ -3,3 +3,4 @@ test/test_ndarray
 test/test_variable
 test/test_multilayer_perceptron
 src/main
+*.o
