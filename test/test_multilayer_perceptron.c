@@ -12,7 +12,8 @@ static void test_new_multilayer_perceptron(void **state) {
 
   multilayer_perceptron *mlp =
       new_multilayer_perceptron(2, 64, (int[]){16, 32}, (int[]){32, 8},
-                                (activation_function[]){LINEAR, LINEAR});
+                                (activation_function[]){LINEAR, LINEAR},
+                                (random_initialisation[]){UNIFORM, UNIFORM});
   assert_non_null(mlp);
   assert_int_equal(mlp->n_layers, 2);
   assert_int_equal(mlp->batch_size, 64);
@@ -35,10 +36,10 @@ static void test_new_multilayer_perceptron(void **state) {
   assert_int_equal(mlp->bias[0]->val->size, 32);
   assert_int_equal(mlp->bias[1]->val->size, 8);
 
-  free_variable(&(mlp->weights[0]));
-  free_variable(&(mlp->weights[1]));
-  free_variable(&(mlp->bias[0]));
-  free_variable(&(mlp->bias[1]));
+  free_graph_variable(&(mlp->weights[0]));
+  free_graph_variable(&(mlp->weights[1]));
+  free_graph_variable(&(mlp->bias[0]));
+  free_graph_variable(&(mlp->bias[1]));
   free_multilayer_perceptron(&mlp);
 }
 
@@ -95,16 +96,17 @@ static void test_forward_multilayer_perceptron(void **state) {
 
   multilayer_perceptron *mlp = new_multilayer_perceptron(
       3, 64, (int[]){32, 128, 256}, (int[]){128, 256, 512},
-      (activation_function[]){LINEAR, LINEAR, LINEAR});
-  free_variable(&(mlp->weights[0]));
-  free_variable(&(mlp->weights[1]));
-  free_variable(&(mlp->weights[2]));
+      (activation_function[]){LINEAR, LINEAR, LINEAR},
+      (random_initialisation[]){UNIFORM, UNIFORM, UNIFORM});
+  free_graph_variable(&(mlp->weights[0]));
+  free_graph_variable(&(mlp->weights[1]));
+  free_graph_variable(&(mlp->weights[2]));
   mlp->weights[0] = weights0_var;
   mlp->weights[1] = weights1_var;
   mlp->weights[2] = weights2_var;
-  free_variable(&(mlp->bias[0]));
-  free_variable(&(mlp->bias[1]));
-  free_variable(&(mlp->bias[2]));
+  free_graph_variable(&(mlp->bias[0]));
+  free_graph_variable(&(mlp->bias[1]));
+  free_graph_variable(&(mlp->bias[2]));
   mlp->bias[0] = bias0_var;
   mlp->bias[1] = bias1_var;
   mlp->bias[2] = bias2_var;
@@ -141,7 +143,7 @@ static void test_forward_multilayer_perceptron(void **state) {
   free_ndarray(&bias0_grad);
   free_ndarray(&bias1_grad);
   free_ndarray(&bias2_grad);
-  free_variable(&y_hat_var);
+  free_graph_variable(&y_hat_var);
   free_multilayer_perceptron(&mlp);
 }
 int main(void) {

@@ -133,6 +133,24 @@ static void test_random_ndrray(void **state) {
   free_ndarray(&arr);
 }
 
+static void test_random_truncated_ndarray(void **state) {
+  (void)state;
+
+  ndarray *arr =
+      random_truncated_ndarray(2, (int[]){2, 3}, 0.0, 1.0, -0.5, 0.5);
+
+  assert_non_null(arr);
+  assert_int_equal(arr->dim, 2);
+  assert_int_equal(arr->size, 6);
+  assert_int_equal(arr->shape[0], 2);
+  assert_int_equal(arr->shape[1], 3);
+  for (int i = 0; i < arr->size; i++) {
+    assert_in_range(arr->data[i], -1.0f, 1.0f);
+  }
+
+  free_ndarray(&arr);
+}
+
 static void test_read_ndarray(void **state) {
   (void)state;
 
@@ -944,6 +962,7 @@ int main(void) {
       cmocka_unit_test(test_ones_ndarray),
       cmocka_unit_test(test_eye_ndarray),
       cmocka_unit_test(test_random_ndrray),
+      cmocka_unit_test(test_random_truncated_ndarray),
       cmocka_unit_test(test_read_ndarray),
       cmocka_unit_test(test_is_equal),
       cmocka_unit_test(test_unary_op_ndarray),

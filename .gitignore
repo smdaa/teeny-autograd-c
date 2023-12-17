@@ -2,5 +2,6 @@
 test/test_ndarray
 test/test_variable
 test/test_multilayer_perceptron
+examples/paint/main
 **/*.o
 utils/__pycache__

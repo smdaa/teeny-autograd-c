@@ -42,6 +42,9 @@ void backward_variable(variable *root_var);
 
 void print_variable(variable *var);
 
-void free_variable(variable **root_var);
+void free_variable(variable **var);
+
+void free_graph_variable(variable **root_var);
+
 
 #endif

@@ -572,7 +572,7 @@ void print_variable(variable *var) {
   }
 }
 
-void free_variable_helper(variable **var) {
+void free_variable(variable **var) {
   if (*var == NULL) {
     return;
   }
@@ -596,14 +596,14 @@ void free_variable_helper(variable **var) {
   }
 }
 
-void free_variable(variable **root_var) {
+void free_graph_variable(variable **root_var) {
   if (*root_var == NULL) {
     return;
   }
 
   for (int i = 0; i < (*root_var)->n_children; i++) {
-    free_variable(&((*root_var)->children[i]));
+    free_graph_variable(&((*root_var)->children[i]));
   }
 
-  free_variable_helper(root_var);
+  free_variable(root_var);
 }

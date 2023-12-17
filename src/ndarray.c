@@ -1,8 +1,6 @@
 #include "ndarray.h"
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#define PI 3.14159265358979323846
 
 static NDARRAY_TYPE add(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a + b; }
 static NDARRAY_TYPE subtract(NDARRAY_TYPE a, NDARRAY_TYPE b) { return a - b; }
@@ -100,6 +98,7 @@ ndarray *eye_ndarray(int size) {
 }
 
 ndarray *random_ndrray(int dim, int *shape) {
+  srand(time(NULL));
   ndarray *arr = (ndarray *)malloc(sizeof(ndarray));
   arr->dim = dim;
   arr->size = get_size(dim, shape);
@@ -112,6 +111,32 @@ ndarray *random_ndrray(int dim, int *shape) {
     arr->data[i] = (NDARRAY_TYPE)rand() / (RAND_MAX);
   }
 
+  return arr;
+}
+
+ndarray *random_truncated_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
+                                  NDARRAY_TYPE std, NDARRAY_TYPE lo,
+                                  NDARRAY_TYPE hi) {
+  srand(time(NULL));
+  ndarray *arr = (ndarray *)malloc(sizeof(ndarray));
+  arr->dim = dim;
+  arr->size = get_size(dim, shape);
+  arr->shape = (int *)malloc(dim * sizeof(int));
+  for (int i = 0; i < dim; i++) {
+    arr->shape[i] = shape[i];
+  }
+  arr->data = (NDARRAY_TYPE *)malloc(arr->size * sizeof(NDARRAY_TYPE));
+  for (int i = 0; i < arr->size; i++) {
+    double u1 = (double)rand() / RAND_MAX;
+    double u2 = (double)rand() / RAND_MAX;
+    // Box-Muller transform
+    NDARRAY_TYPE z = sqrt(-2.0 * log(u1)) * cos(2.0 * PI * u2);
+    arr->data[i] = mean + std * z;
+    if (arr->data[i] < lo)
+      arr->data[i] = lo;
+    if (arr->data[i] > hi)
+      arr->data[i] = hi;
+  }
   return arr;
 }
 

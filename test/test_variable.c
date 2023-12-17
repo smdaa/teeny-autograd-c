@@ -31,7 +31,7 @@ static void test_new_variable(void **state) {
   assert_int_equal(var->ref_count, 0);
 
   free_ndarray(&val);
-  free_variable(&var);
+  free_graph_variable(&var);
 }
 
 static void test_add_variable(void **state) {
@@ -196,12 +196,12 @@ static void test_add_variable(void **state) {
   free_ndarray(&b4_grad);
   free_ndarray(&b5_grad);
 
-  free_variable(&var_c0_hat);
-  free_variable(&var_c1_hat);
-  free_variable(&var_c2_hat);
-  free_variable(&var_c3_hat);
-  free_variable(&var_c4_hat);
-  free_variable(&var_c5_hat);
+  free_graph_variable(&var_c0_hat);
+  free_graph_variable(&var_c1_hat);
+  free_graph_variable(&var_c2_hat);
+  free_graph_variable(&var_c3_hat);
+  free_graph_variable(&var_c4_hat);
+  free_graph_variable(&var_c5_hat);
 }
 
 static void test_subtract_variable(void **state) {
@@ -366,12 +366,12 @@ static void test_subtract_variable(void **state) {
   free_ndarray(&b4_grad);
   free_ndarray(&b5_grad);
 
-  free_variable(&var_c0_hat);
-  free_variable(&var_c1_hat);
-  free_variable(&var_c2_hat);
-  free_variable(&var_c3_hat);
-  free_variable(&var_c4_hat);
-  free_variable(&var_c5_hat);
+  free_graph_variable(&var_c0_hat);
+  free_graph_variable(&var_c1_hat);
+  free_graph_variable(&var_c2_hat);
+  free_graph_variable(&var_c3_hat);
+  free_graph_variable(&var_c4_hat);
+  free_graph_variable(&var_c5_hat);
 }
 
 static void test_multiply_variable(void **state) {
@@ -536,12 +536,12 @@ static void test_multiply_variable(void **state) {
   free_ndarray(&b4_grad);
   free_ndarray(&b5_grad);
 
-  free_variable(&var_c0_hat);
-  free_variable(&var_c1_hat);
-  free_variable(&var_c2_hat);
-  free_variable(&var_c3_hat);
-  free_variable(&var_c4_hat);
-  free_variable(&var_c5_hat);
+  free_graph_variable(&var_c0_hat);
+  free_graph_variable(&var_c1_hat);
+  free_graph_variable(&var_c2_hat);
+  free_graph_variable(&var_c3_hat);
+  free_graph_variable(&var_c4_hat);
+  free_graph_variable(&var_c5_hat);
 }
 
 static void test_divide_variable(void **state) {
@@ -706,12 +706,12 @@ static void test_divide_variable(void **state) {
   free_ndarray(&b4_grad);
   free_ndarray(&b5_grad);
 
-  free_variable(&var_c0_hat);
-  free_variable(&var_c1_hat);
-  free_variable(&var_c2_hat);
-  free_variable(&var_c3_hat);
-  free_variable(&var_c4_hat);
-  free_variable(&var_c5_hat);
+  free_graph_variable(&var_c0_hat);
+  free_graph_variable(&var_c1_hat);
+  free_graph_variable(&var_c2_hat);
+  free_graph_variable(&var_c3_hat);
+  free_graph_variable(&var_c4_hat);
+  free_graph_variable(&var_c5_hat);
 }
 
 static void test_power_variable(void **state) {
@@ -876,12 +876,12 @@ static void test_power_variable(void **state) {
   free_ndarray(&b4_grad);
   free_ndarray(&b5_grad);
 
-  free_variable(&var_c0_hat);
-  free_variable(&var_c1_hat);
-  free_variable(&var_c2_hat);
-  free_variable(&var_c3_hat);
-  free_variable(&var_c4_hat);
-  free_variable(&var_c5_hat);
+  free_graph_variable(&var_c0_hat);
+  free_graph_variable(&var_c1_hat);
+  free_graph_variable(&var_c2_hat);
+  free_graph_variable(&var_c3_hat);
+  free_graph_variable(&var_c4_hat);
+  free_graph_variable(&var_c5_hat);
 }
 
 static void test_exp_variable(void **state) {
@@ -945,9 +945,9 @@ static void test_exp_variable(void **state) {
   free_ndarray(&x1_grad);
   free_ndarray(&x2_grad);
 
-  free_variable(&var_y0_hat);
-  free_variable(&var_y1_hat);
-  free_variable(&var_y2_hat);
+  free_graph_variable(&var_y0_hat);
+  free_graph_variable(&var_y1_hat);
+  free_graph_variable(&var_y2_hat);
 }
 
 static void test_relu_variable(void **state) {
@@ -1011,9 +1011,9 @@ static void test_relu_variable(void **state) {
   free_ndarray(&x1_grad);
   free_ndarray(&x2_grad);
 
-  free_variable(&var_y0_hat);
-  free_variable(&var_y1_hat);
-  free_variable(&var_y2_hat);
+  free_graph_variable(&var_y0_hat);
+  free_graph_variable(&var_y1_hat);
+  free_graph_variable(&var_y2_hat);
 }
 
 static void test_sum_variable(void **state) {
@@ -1077,9 +1077,9 @@ static void test_sum_variable(void **state) {
   free_ndarray(&x1_grad);
   free_ndarray(&x2_grad);
 
-  free_variable(&var_y0_hat);
-  free_variable(&var_y1_hat);
-  free_variable(&var_y2_hat);
+  free_graph_variable(&var_y0_hat);
+  free_graph_variable(&var_y1_hat);
+  free_graph_variable(&var_y2_hat);
 }
 
 static void test_sigmoid_variable(void **state) {
@@ -1143,9 +1143,9 @@ static void test_sigmoid_variable(void **state) {
   free_ndarray(&x1_grad);
   free_ndarray(&x2_grad);
 
-  free_variable(&var_y0_hat);
-  free_variable(&var_y1_hat);
-  free_variable(&var_y2_hat);
+  free_graph_variable(&var_y0_hat);
+  free_graph_variable(&var_y1_hat);
+  free_graph_variable(&var_y2_hat);
 }
 
 static void test_softmax_variable(void **state) {
@@ -1209,9 +1209,9 @@ static void test_softmax_variable(void **state) {
   free_ndarray(&x1_grad);
   free_ndarray(&x2_grad);
 
-  free_variable(&var_y0_hat);
-  free_variable(&var_y1_hat);
-  free_variable(&var_y2_hat);
+  free_graph_variable(&var_y0_hat);
+  free_graph_variable(&var_y1_hat);
+  free_graph_variable(&var_y2_hat);
 }
 
 static void test_tanh_variable(void **state) {
@@ -1275,9 +1275,9 @@ static void test_tanh_variable(void **state) {
   free_ndarray(&x1_grad);
   free_ndarray(&x2_grad);
 
-  free_variable(&var_y0_hat);
-  free_variable(&var_y1_hat);
-  free_variable(&var_y2_hat);
+  free_graph_variable(&var_y0_hat);
+  free_graph_variable(&var_y1_hat);
+  free_graph_variable(&var_y2_hat);
 }
 
 static void test_matmul_variable(void **state) {
@@ -1390,10 +1390,10 @@ static void test_matmul_variable(void **state) {
   free_ndarray(&b2_grad);
   free_ndarray(&b3_grad);
 
-  free_variable(&var_c0_hat);
-  free_variable(&var_c1_hat);
-  free_variable(&var_c2_hat);
-  free_variable(&var_c3_hat);
+  free_graph_variable(&var_c0_hat);
+  free_graph_variable(&var_c1_hat);
+  free_graph_variable(&var_c2_hat);
+  free_graph_variable(&var_c3_hat);
 }
 
 static void test_backward_variable(void **state) {
@@ -1438,7 +1438,7 @@ static void test_backward_variable(void **state) {
   free_ndarray(&a_grad);
   free_ndarray(&b_grad);
   free_ndarray(&c_grad);
-  free_variable(&var_d_hat);
+  free_graph_variable(&var_d_hat);
 }
 
 int main(void) {

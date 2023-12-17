@@ -1,5 +1,10 @@
-#include <float.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
+#include <float.h>
+#include <math.h>
+#include <time.h>
+#include <omp.h>
 #ifndef TEENY_AUTOGRAD_C_NDARRAY_H
 #define TEENY_AUTOGRAD_C_NDARRAY_H
 
@@ -28,6 +33,10 @@ ndarray *ones_ndarray(int dim, int *shape);
 ndarray *eye_ndarray(int size);
 
 ndarray *random_ndrray(int dim, int *shape);
+
+ndarray *random_truncated_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
+                                  NDARRAY_TYPE std, NDARRAY_TYPE lo,
+                                  NDARRAY_TYPE hi);
 
 ndarray *read_ndarray(const char *filename);
 
