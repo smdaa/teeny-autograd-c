@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <cmocka.h>
 
+// valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --error-exitcode=1 ./test_ndarray
+
 #include "../src/ndarray.h"
 
 static void test_full_ndarray(void **state) {

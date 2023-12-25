@@ -30,7 +30,7 @@ variable **create_batches(ndarray *x, int batch_size) {
 }
 
 int main(void) {
-  int layer_size = 32;
+  int layer_size = 16;
   int batch_size = 64;
   int height = 1024;
   int width = 1024;

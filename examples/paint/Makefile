@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c11 -Wall -Wextra -O3 
+CFLAGS=-std=c11 -Wall -Wextra -O3
 LDFLAGS=-lm -lpng
 SRC=../../src
 OBJ=$(SRC)/ndarray.o $(SRC)/variable.o $(SRC)/multilayer_perceptron.o

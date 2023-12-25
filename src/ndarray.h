@@ -4,7 +4,6 @@
 #include <float.h>
 #include <math.h>
 #include <time.h>
-#include <omp.h>
 #ifndef TEENY_AUTOGRAD_C_NDARRAY_H
 #define TEENY_AUTOGRAD_C_NDARRAY_H
 
