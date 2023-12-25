@@ -13,14 +13,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Cache cmocka
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cmake
+        key: cmocka-${{ runner.os }}
+
     - name: Install cmocka
       run: |
         sudo apt-get update
         sudo apt-get install -y libcmocka-dev
         
-    - name: Build and Test ndarray
+    - name: Build and test ndarray
       run: |
         cd test
-        make
+        make test_ndarray
         ./test_ndarray
+
+    - name: Build and test variable
+      run: |
+        cd test
+        make test_variable
+        ./test_variable
+
+    - name: Build and test multilayer perceptron
+      run: |
+        cd test
+        make test_multilayer_perceptron
+        ./test_multilayer_perceptron
 
