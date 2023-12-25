@@ -287,7 +287,7 @@ ndarray *add_ndarray_ndarray(ndarray *arr1, ndarray *arr2) {
 }
 
 ndarray *subtract_ndarray_ndarray(ndarray *arr1, ndarray *arr2) {
-  return binary_op_ndarray(arr1, arr2, subtract);
+  return binary_op_ndarray(arr1, arr2, add);
 }
 
 ndarray *multiply_ndarray_ndarray(ndarray *arr1, ndarray *arr2) {
