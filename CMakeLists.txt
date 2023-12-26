@@ -18,7 +18,7 @@ option(BUILD_TESTS "Build tests" ON)
 
 if(BUILD_TESTS)
     # Include CMocka as a submodule
-    add_subdirectory(external/cmocka)
+    add_subdirectory(extern/cmocka)
 
     # Create test executable and link with cmocka and the library
     add_executable(test_ndarray test/test_ndarray.c)

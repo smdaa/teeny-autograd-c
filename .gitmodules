@@ -1,0 +1,3 @@
+[submodule "extern/cmocka"]
+	path = extern/cmocka
+	url = https://github.com/clibs/cmocka.git
