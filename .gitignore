@@ -1,3 +1,4 @@
 pyvenv
 cmake-build-debug
 .idea
+test/__pycache__

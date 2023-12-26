@@ -16,6 +16,7 @@ jobs:
 
     - name: Build & Test
       run: |
+        git submodule update --init --recursive
         mkdir build
         cd build
         cmake -DBUILD_TESTS=ON ..
