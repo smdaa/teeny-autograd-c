@@ -4,6 +4,7 @@
 #include <float.h>
 #include <math.h>
 #include <time.h>
+
 #ifndef TEENY_AUTOGRAD_C_NDARRAY_H
 #define TEENY_AUTOGRAD_C_NDARRAY_H
 
@@ -13,10 +14,10 @@
 #define NDARRAY_TYPE_EPSILON 1E-10
 
 typedef struct ndarray {
-  int dim;
-  int size;
-  int *shape;
-  NDARRAY_TYPE *data;
+    int dim;
+    int size;
+    int *shape;
+    NDARRAY_TYPE *data;
 } ndarray;
 
 ndarray *full_ndarray(int dim, int *shape, NDARRAY_TYPE value);
