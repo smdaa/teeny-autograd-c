@@ -27,22 +27,33 @@ new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes,
 
         switch (mlp->random_initialisations[i]) {
             case UNIFORM:
-                place_holder = random_ndrray(2, (int[]) {in_sizes[i], out_sizes[i]});
+                NDARRAY_TYPE stdv = 1.0 / sqrt((NDARRAY_TYPE)mlp->out_sizes[i]);
+
+                place_holder = random_uniform_ndarray(2, (int[]) {in_sizes[i], out_sizes[i]}, -stdv, stdv);
                 mlp->weights[i] = new_variable(place_holder);
                 free_ndarray(&place_holder);
 
-                place_holder = random_ndrray(2, (int[]) {1, out_sizes[i]});
+                place_holder = random_uniform_ndarray(2, (int[]) {1, out_sizes[i]}, -stdv, stdv);
+                mlp->bias[i] = new_variable(place_holder);
+                free_ndarray(&place_holder);
+                break;
+            case NORMAL:
+                place_holder = random_normal_ndarray(2, (int[]) {in_sizes[i], out_sizes[i]}, 0.0, 1.0);
+                mlp->weights[i] = new_variable(place_holder);
+                free_ndarray(&place_holder);
+
+                place_holder = random_normal_ndarray(2, (int[]) {1, out_sizes[i]}, 0.0, 1.0);
                 mlp->bias[i] = new_variable(place_holder);
                 free_ndarray(&place_holder);
                 break;
             case TRUNCATED_NORMAL:
-                place_holder = random_truncated_ndarray(
+                place_holder = random_truncated_normal_ndarray(
                         2, (int[]) {in_sizes[i], out_sizes[i]}, 0.0, 1.0, -2.0, 2.0);
                 mlp->weights[i] = new_variable(place_holder);
                 free_ndarray(&place_holder);
 
-                place_holder = random_truncated_ndarray(2, (int[]) {1, out_sizes[i]}, 0.0,
-                                                        1.0, -2.0, 2.0);
+                place_holder = random_truncated_normal_ndarray(2, (int[]) {1, out_sizes[i]}, 0.0,
+                                                               1.0, -2.0, 2.0);
                 mlp->bias[i] = new_variable(place_holder);
                 free_ndarray(&place_holder);
                 break;

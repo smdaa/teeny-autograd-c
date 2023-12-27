@@ -5,6 +5,7 @@
 
 typedef enum {
     UNIFORM,
+    NORMAL,
     TRUNCATED_NORMAL,
 } random_initialisation;
 

@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <png.h>
 #include <math.h>
+#include "../../extern/libpng/png.h"
 #include "../../src/multilayer_perceptron.h"
-
-#define PI 3.14159265358979323846
 
 variable **create_batches(ndarray *x, int batch_size) {
     int n_batches = (x->shape[0] + batch_size - 1) / batch_size;
@@ -30,7 +28,7 @@ variable **create_batches(ndarray *x, int batch_size) {
 }
 
 int main(void) {
-    int layer_size = 16;
+    int layer_size = 32;
     int batch_size = 64;
     int height = 1024;
     int width = 1024;
@@ -38,13 +36,11 @@ int main(void) {
 
     // Create model
     multilayer_perceptron *mlp = new_multilayer_perceptron(
-            6, batch_size,
-            (int[]) {3, layer_size, layer_size, layer_size, layer_size, layer_size},
-            (int[]) {layer_size, layer_size, layer_size, layer_size, layer_size, 3},
-            (activation_function[]) {TANH, TANH, TANH, TANH, TANH, SIGMOID},
-            (random_initialisation[]) {TRUNCATED_NORMAL, TRUNCATED_NORMAL,
-                                       TRUNCATED_NORMAL, TRUNCATED_NORMAL,
-                                       TRUNCATED_NORMAL, TRUNCATED_NORMAL});
+            9, batch_size,
+            (int[]) {3, layer_size, layer_size, layer_size, layer_size, layer_size, layer_size, layer_size, layer_size},
+            (int[]) {layer_size, layer_size, layer_size, layer_size, layer_size, layer_size, layer_size, layer_size, 3},
+            (activation_function[]) {TANH, TANH, TANH, TANH, TANH, TANH, TANH, TANH, SIGMOID},
+            (random_initialisation[]) {NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL, NORMAL});
 
     // Generate data
     ndarray *x = zeros_ndarray(2, (int[]) {height * width, 3});

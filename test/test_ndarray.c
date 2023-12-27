@@ -3,7 +3,7 @@
 #include <math.h>
 #include <setjmp.h>
 #include <stdarg.h>
-#include <cmocka.h>
+#include "../extern/cmocka/include/cmocka.h"
 #include "../src/ndarray.h"
 
 // valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all
@@ -120,28 +120,54 @@ static void test_eye_ndarray(void **state) {
     free_ndarray(&arr);
 }
 
-static void test_random_ndrray(void **state) {
+static void test_random_uniform_ndarray(void **state) {
     (void) state;
-
-    ndarray *arr = random_ndrray(2, (int[]) {2, 3});
-
+    NDARRAY_TYPE min_val = -0.1f;
+    NDARRAY_TYPE max_val = 0.1f;
+    ndarray *arr = random_uniform_ndarray(2, (int[]) {2, 1000}, min_val, max_val);
     assert_non_null(arr);
     assert_int_equal(arr->dim, 2);
-    assert_int_equal(arr->size, 6);
+    assert_int_equal(arr->size, 2000);
     assert_int_equal(arr->shape[0], 2);
-    assert_int_equal(arr->shape[1], 3);
+    assert_int_equal(arr->shape[1], 1000);
     for (int i = 0; i < arr->size; i++) {
-        assert_in_range(arr->data[0], 0.0f, 1.0f);
+        assert_true(arr->data[i] > min_val && arr->data[i] < max_val);
     }
 
     free_ndarray(&arr);
 }
 
-static void test_random_truncated_ndarray(void **state) {
+static void test_random_normal_ndarray(void **state) {
+    (void) state;
+    NDARRAY_TYPE mean = 1.0;
+    NDARRAY_TYPE std = 2.0;
+    ndarray *arr = random_normal_ndarray(2, (int[]) {1, 100000}, mean, std);
+    assert_non_null(arr);
+    assert_int_equal(arr->dim, 2);
+    assert_int_equal(arr->size, 100000);
+    assert_int_equal(arr->shape[0], 1);
+    assert_int_equal(arr->shape[1], 100000);
+    NDARRAY_TYPE mean_hat = 0.0;
+    NDARRAY_TYPE std_hat = 0.0;
+    for (int i = 0; i < arr->size; i++) {
+        mean_hat += arr->data[i];
+    }
+    mean_hat /= (NDARRAY_TYPE)arr->size;
+    for (int i = 0; i < arr->size; i++) {
+        std_hat += (arr->data[i] - mean_hat) * (arr->data[i] - mean_hat);
+    }
+    std_hat = sqrt(std_hat / (NDARRAY_TYPE)arr->size);
+    assert_double_equal(mean_hat, mean , 1E-2);
+    assert_double_equal(std_hat, std , 1E-2);
+
+    free_ndarray(&arr);
+}
+
+static void test_random_truncated_normal_ndarray(void **state) {
     (void) state;
 
     ndarray *arr =
-            random_truncated_ndarray(2, (int[]) {2, 3}, 0.0, 1.0, -0.5, 0.5);
+            random_truncated_normal_ndarray(2, (int[]) {2, 3}, 0.0, 1.0, -0.5, 0.5);
 
     assert_non_null(arr);
     assert_int_equal(arr->dim, 2);
@@ -149,7 +175,7 @@ static void test_random_truncated_ndarray(void **state) {
     assert_int_equal(arr->shape[0], 2);
     assert_int_equal(arr->shape[1], 3);
     for (int i = 0; i < arr->size; i++) {
-        assert_in_range(arr->data[i], -1.0f, 1.0f);
+        assert_true(arr->data[i] > -1.0f && arr->data[i] < 1.0f);
     }
 
     free_ndarray(&arr);
@@ -681,8 +707,9 @@ int main(void) {
             cmocka_unit_test(test_zeros_ndarray),
             cmocka_unit_test(test_ones_ndarray),
             cmocka_unit_test(test_eye_ndarray),
-            cmocka_unit_test(test_random_ndrray),
-            cmocka_unit_test(test_random_truncated_ndarray),
+            cmocka_unit_test(test_random_uniform_ndarray),
+            cmocka_unit_test(test_random_normal_ndarray),
+            cmocka_unit_test(test_random_truncated_normal_ndarray),
             cmocka_unit_test(test_read_ndarray),
             cmocka_unit_test(test_is_equal),
             cmocka_unit_test(test_unary_op_ndarray),

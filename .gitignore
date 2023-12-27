@@ -1,4 +1,6 @@
 pyvenv
 cmake-build-debug
+cmake-build-release
 .idea
 test/__pycache__
+compile_commands.json

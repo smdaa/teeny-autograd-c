@@ -3,7 +3,7 @@
 #include <math.h>
 #include <setjmp.h>
 #include <stdarg.h>
-#include <cmocka.h>
+#include "../extern/cmocka/include/cmocka.h"
 #include "../src/variable.h"
 
 const char *dataDir;

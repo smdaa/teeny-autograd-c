@@ -104,7 +104,28 @@ ndarray *eye_ndarray(int size) {
     return arr;
 }
 
-ndarray *random_ndrray(int dim, int *shape) {
+NDARRAY_TYPE sample_uniform() {
+    return ((NDARRAY_TYPE) rand() / RAND_MAX);
+}
+
+NDARRAY_TYPE sample_normal() {
+    NDARRAY_TYPE u = ((NDARRAY_TYPE) rand() / (RAND_MAX)) * 2 - 1;
+    NDARRAY_TYPE v = ((NDARRAY_TYPE) rand() / (RAND_MAX)) * 2 - 1;
+    NDARRAY_TYPE r = u * u + v * v;
+    if (r == 0 || r > 1) return sample_normal();
+    NDARRAY_TYPE c = sqrt(-2 * log(r) / r);
+    return u * c;
+}
+
+NDARRAY_TYPE sample_truncated_normal(NDARRAY_TYPE mean, NDARRAY_TYPE std, NDARRAY_TYPE lo, NDARRAY_TYPE hi) {
+    NDARRAY_TYPE sample;
+    do {
+        sample = mean + std * sample_normal();
+    } while (sample < lo || sample > hi);
+    return sample;
+}
+
+ndarray *random_uniform_ndarray(int dim, int *shape, NDARRAY_TYPE min_val, NDARRAY_TYPE max_val) {
     srand(time(NULL));
     ndarray *arr = (ndarray *) malloc(sizeof(ndarray));
     arr->dim = dim;
@@ -115,15 +136,33 @@ ndarray *random_ndrray(int dim, int *shape) {
     }
     arr->data = (NDARRAY_TYPE *) malloc(arr->size * sizeof(NDARRAY_TYPE));
     for (int i = 0; i < arr->size; i++) {
-        arr->data[i] = (NDARRAY_TYPE) rand() / (RAND_MAX);
+        arr->data[i] = sample_uniform() * (max_val - min_val) + min_val;
     }
 
     return arr;
 }
 
-ndarray *random_truncated_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
-                                  NDARRAY_TYPE std, NDARRAY_TYPE lo,
-                                  NDARRAY_TYPE hi) {
+ndarray *random_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean, NDARRAY_TYPE std) {
+    srand(time(NULL));
+    ndarray *arr = (ndarray *) malloc(sizeof(ndarray));
+    arr->dim = dim;
+    arr->size = get_size(dim, shape);
+    arr->shape = (int *) malloc(dim * sizeof(int));
+    for (int i = 0; i < dim; i++) {
+        arr->shape[i] = shape[i];
+    }
+    arr->data = (NDARRAY_TYPE *) malloc(arr->size * sizeof(NDARRAY_TYPE));
+    arr->data = (NDARRAY_TYPE *) malloc(arr->size * sizeof(NDARRAY_TYPE));
+    for (int i = 0; i < arr->size; i++) {
+        arr->data[i] = mean + std * sample_normal();
+    }
+
+    return arr;
+}
+
+ndarray *random_truncated_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
+                                         NDARRAY_TYPE std, NDARRAY_TYPE lo,
+                                         NDARRAY_TYPE hi) {
     srand(time(NULL));
     ndarray *arr = (ndarray *) malloc(sizeof(ndarray));
     arr->dim = dim;
@@ -134,15 +173,7 @@ ndarray *random_truncated_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
     }
     arr->data = (NDARRAY_TYPE *) malloc(arr->size * sizeof(NDARRAY_TYPE));
     for (int i = 0; i < arr->size; i++) {
-        double u1 = (double) rand() / RAND_MAX;
-        double u2 = (double) rand() / RAND_MAX;
-        // Box-Muller transform
-        NDARRAY_TYPE z = sqrt(-2.0 * log(u1)) * cos(2.0 * PI * u2);
-        arr->data[i] = mean + std * z;
-        if (arr->data[i] < lo)
-            arr->data[i] = lo;
-        if (arr->data[i] > hi)
-            arr->data[i] = hi;
+        arr->data[i] = sample_truncated_normal(mean, std, lo, hi);
     }
     return arr;
 }
@@ -168,7 +199,7 @@ ndarray *read_ndarray(const char *filename) {
     return arr;
 }
 
-bool is_equal_ndarray(ndarray *arr1, ndarray *arr2, double tolerance) {
+bool is_equal_ndarray(ndarray *arr1, ndarray *arr2, NDARRAY_TYPE tolerance) {
     if (arr1->dim != arr2->dim || arr1->size != arr2->size) {
         return false;
     }

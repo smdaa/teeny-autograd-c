@@ -32,11 +32,13 @@ ndarray *ones_ndarray(int dim, int *shape);
 
 ndarray *eye_ndarray(int size);
 
-ndarray *random_ndrray(int dim, int *shape);
+ndarray *random_uniform_ndarray(int dim, int *shape, NDARRAY_TYPE min_val, NDARRAY_TYPE max_val);
 
-ndarray *random_truncated_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
-                                  NDARRAY_TYPE std, NDARRAY_TYPE lo,
-                                  NDARRAY_TYPE hi);
+ndarray *random_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean, NDARRAY_TYPE std);
+
+ndarray *random_truncated_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
+                                         NDARRAY_TYPE std, NDARRAY_TYPE lo,
+                                         NDARRAY_TYPE hi);
 
 ndarray *read_ndarray(const char *filename);
 

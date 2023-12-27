@@ -4,8 +4,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <cmocka.h>
-
+#include "../extern/cmocka/include/cmocka.h"
 #include "../src/multilayer_perceptron.h"
 
 const char *dataDir;

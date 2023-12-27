@@ -14,11 +14,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build & Test
+    - name: Build & Run Unit Tests
       run: |
         git submodule update --init --recursive
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTS=ON ..
+        mkdir debug-build
+        cd debug-build
+        cmake -DBUILD_TESTS=ON -CMAKE_BUILD_TYPE=Debug ..
         make
         ctest
+
+    - name: Build & Run examples
+      run: |
+        git submodule update --init --recursive
+        mkdir release-build
+        cd release-build
+        cmake -DBUILD_TESTS=OFF -CMAKE_BUILD_TYPE=Release ..
+        make
+        ./paint
