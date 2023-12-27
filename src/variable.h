@@ -4,14 +4,14 @@
 #define TEENY_AUTOGRAD_C_VARIABLE_H
 
 typedef struct variable {
-    ndarray *val;
-    ndarray *grad;
-    struct variable **children;
-    int n_children;
+  ndarray *val;
+  ndarray *grad;
+  struct variable **children;
+  int n_children;
 
-    void (*backward)(struct variable *);
+  void (*backward)(struct variable *);
 
-    int ref_count;
+  int ref_count;
 } variable;
 
 variable *new_variable(ndarray *val);
@@ -47,6 +47,5 @@ void print_variable(variable *var);
 void free_variable(variable **var);
 
 void free_graph_variable(variable **root_var);
-
 
 #endif

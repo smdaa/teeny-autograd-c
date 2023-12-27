@@ -14,10 +14,10 @@
 #define NDARRAY_TYPE_EPSILON 1E-10
 
 typedef struct ndarray {
-    int dim;
-    int size;
-    int *shape;
-    NDARRAY_TYPE *data;
+  int dim;
+  int size;
+  int *shape;
+  NDARRAY_TYPE *data;
 } ndarray;
 
 ndarray *full_ndarray(int dim, int *shape, NDARRAY_TYPE value);
@@ -32,9 +32,11 @@ ndarray *ones_ndarray(int dim, int *shape);
 
 ndarray *eye_ndarray(int size);
 
-ndarray *random_uniform_ndarray(int dim, int *shape, NDARRAY_TYPE min_val, NDARRAY_TYPE max_val);
+ndarray *random_uniform_ndarray(int dim, int *shape, NDARRAY_TYPE min_val,
+                                NDARRAY_TYPE max_val);
 
-ndarray *random_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean, NDARRAY_TYPE std);
+ndarray *random_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
+                               NDARRAY_TYPE std);
 
 ndarray *random_truncated_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
                                          NDARRAY_TYPE std, NDARRAY_TYPE lo,

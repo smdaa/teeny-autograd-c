@@ -4,28 +4,28 @@
 #define TEENY_AUTOGRAD_C_MULTILAYER_PERCEPTRON_H
 
 typedef enum {
-    UNIFORM,
-    NORMAL,
-    TRUNCATED_NORMAL,
+  UNIFORM,
+  NORMAL,
+  TRUNCATED_NORMAL,
 } random_initialisation;
 
 typedef enum {
-    LINEAR,
-    RELU,
-    SIGMOID,
-    SOFTMAX,
-    TANH,
+  LINEAR,
+  RELU,
+  SIGMOID,
+  SOFTMAX,
+  TANH,
 } activation_function;
 
 typedef struct multilayer_perceptron {
-    int n_layers;
-    int batch_size;
-    int *in_sizes;
-    int *out_sizes;
-    variable **weights;
-    variable **bias;
-    activation_function *activations;
-    random_initialisation *random_initialisations;
+  int n_layers;
+  int batch_size;
+  int *in_sizes;
+  int *out_sizes;
+  variable **weights;
+  variable **bias;
+  activation_function *activations;
+  random_initialisation *random_initialisations;
 
 } multilayer_perceptron;
 
