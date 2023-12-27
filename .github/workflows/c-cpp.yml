@@ -14,16 +14,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # TODO build without doc (not needed)
-    - name: Install Doxygen
-      run: sudo apt-get install -y doxygen
-
     - name: Build & Run Unit Tests
       run: |
         git submodule update --init --recursive
         mkdir debug-build
         cd debug-build
-        cmake -DBUILD_TESTS=ON -CMAKE_BUILD_TYPE=Debug ..
+        cmake -DBUILD_TESTS=ON ..
         make
         ctest
 
@@ -32,6 +28,6 @@ jobs:
         git submodule update --init --recursive
         mkdir release-build
         cd release-build
-        cmake -DBUILD_TESTS=OFF -CMAKE_BUILD_TYPE=Release ..
+        cmake -DBUILD_TESTS=OFF ..
         make
         ./paint
