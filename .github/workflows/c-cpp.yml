@@ -19,15 +19,15 @@ jobs:
         git submodule update --init --recursive
         mkdir debug-build
         cd debug-build
-        cmake -DBUILD_TESTS=ON ..
+        cmake -DBUILD_TESTS=ON -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release ..
         make
-        ctest
+        ctest --rerun-failed --output-on-failure
 
     - name: Build & Run examples
       run: |
         git submodule update --init --recursive
         mkdir release-build
         cd release-build
-        cmake -DBUILD_TESTS=OFF ..
+        cmake -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release ..
         make
         ./paint

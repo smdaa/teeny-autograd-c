@@ -2,3 +2,4 @@ pyvenv
 build-debug
 build-release
 test/__pycache__
+.cache
