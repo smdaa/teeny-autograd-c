@@ -1,6 +1,3 @@
 [submodule "extern/cmocka"]
 	path = extern/cmocka
 	url = https://github.com/clibs/cmocka.git
-[submodule "extern/libpng"]
-	path = extern/libpng
-	url = https://github.com/LuaDist/libpng
