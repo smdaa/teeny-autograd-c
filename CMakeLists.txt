@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.26)
 project(teeny-autograd-c C)
 
 set(CMAKE_C_STANDARD 11)
+set(BUILD_DOCUMENTATION OFF)
 
 # Collect source files for the library
 set(LIB_SRC_FILES
@@ -17,7 +18,6 @@ add_library(teeny-autograd-c ${LIB_SRC_FILES})
 option(BUILD_TESTS "Build tests" ON)
 
 # Include libpng as a submodule
-set(DOXYGEN_SKIP_DOT TRUE)
 add_subdirectory(extern/libpng)
 
 # Create the paint executable and link with the library and libpng
