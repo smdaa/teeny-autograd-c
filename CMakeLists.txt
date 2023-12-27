@@ -22,7 +22,7 @@ set(LIB_SRC_FILES
 )
 
 # Create the teeny-autograd library
-add_library(teeny-autograd-c ${LIB_SRC_FILES})
+add_library( teeny-autograd-c ${LIB_SRC_FILES})
 
 if(BUILD_TESTS)
     # Include CMocka as a submodule
