@@ -28,6 +28,6 @@ jobs:
         git submodule update --init --recursive
         mkdir release-build
         cd release-build
-        cmake -DBUILD_TESTS=OFF ..
+        cmake -DBUILD_TESTS=OFF -CMAKE_BUILD_TYPE=Release ..
         make
         ./paint
