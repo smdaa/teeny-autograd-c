@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.26)
 project(teeny-autograd-c C)
 
 set(CMAKE_C_STANDARD 11)
-set(BUILD_DOCUMENTATION OFF)
 
 # Collect source files for the library
 set(LIB_SRC_FILES
