@@ -1,1 +1,4 @@
 examples/mnist_mlp/x_train.txt filter=lfs diff=lfs merge=lfs -text
+examples/mnist_mlp/x_test.txt filter=lfs diff=lfs merge=lfs -text
+examples/mnist_mlp/y_train.txt filter=lfs diff=lfs merge=lfs -text
+examples/mnist_mlp/y_test.txt filter=lfs diff=lfs merge=lfs -text
