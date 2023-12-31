@@ -241,7 +241,7 @@ void power_backward(variable *var) {
   free_ndarray(&reduced_grad);
 }
 
-void negate_backward(variable *var){
+void negate_backward(variable *var) {
   ndarray *place_holder;
   ndarray *temp;
 
@@ -389,6 +389,7 @@ variable *add_variable(variable *var1, variable *var2) {
   var->n_children = 2;
   var->backward = add_backward;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
   var1->ref_count++;
   var2->ref_count++;
 
@@ -405,6 +406,7 @@ variable *subtract_variable(variable *var1, variable *var2) {
   var->n_children = 2;
   var->backward = subtract_backward;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
   var1->ref_count++;
   var2->ref_count++;
 
@@ -421,6 +423,7 @@ variable *multiply_variable(variable *var1, variable *var2) {
   var->n_children = 2;
   var->backward = multiply_backward;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
   var1->ref_count++;
   var2->ref_count++;
 
@@ -437,6 +440,7 @@ variable *divide_variable(variable *var1, variable *var2) {
   var->n_children = 2;
   var->backward = divide_backward;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
   var1->ref_count++;
   var2->ref_count++;
 
@@ -453,13 +457,14 @@ variable *power_variable(variable *var1, variable *var2) {
   var->n_children = 2;
   var->backward = power_backward;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
   var1->ref_count++;
   var2->ref_count++;
 
   return var;
 }
 
-variable *negate_variable(variable *var){
+variable *negate_variable(variable *var) {
   variable *n_var = (variable *)malloc(sizeof(variable));
   n_var->val = unary_op_ndarray(var->val, negate);
   n_var->grad = zeros_ndarray(n_var->val->dim, n_var->val->shape);
@@ -468,10 +473,10 @@ variable *negate_variable(variable *var){
   n_var->n_children = 1;
   n_var->backward = negate_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
-
 }
 
 variable *exp_variable(variable *var) {
@@ -483,6 +488,7 @@ variable *exp_variable(variable *var) {
   n_var->n_children = 1;
   n_var->backward = exp_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
@@ -497,6 +503,7 @@ variable *log_variable(variable *var) {
   n_var->n_children = 1;
   n_var->backward = log_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
@@ -511,6 +518,7 @@ variable *sum_variable(variable *var, int axis) {
   n_var->n_children = 1;
   n_var->backward = sum_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
@@ -525,6 +533,7 @@ variable *relu_variable(variable *var) {
   n_var->n_children = 1;
   n_var->backward = relu_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
@@ -539,6 +548,7 @@ variable *sigmoid_variable(variable *var) {
   n_var->n_children = 1;
   n_var->backward = sigmoid_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
@@ -559,6 +569,7 @@ variable *tanh_variable(variable *var) {
   n_var->n_children = 1;
   n_var->backward = tanh_backward;
   n_var->ref_count = 0;
+  n_var->tag = OK_TO_FREE;
   var->ref_count++;
 
   return n_var;
@@ -574,6 +585,7 @@ variable *matmul_variable(variable *var1, variable *var2) {
   var->n_children = 2;
   var->backward = matmul_backward;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
   var1->ref_count++;
   var2->ref_count++;
 
@@ -666,5 +678,7 @@ void free_graph_variable(variable **root_var) {
     free_graph_variable(&((*root_var)->children[i]));
   }
 
-  free_variable(root_var);
+  if ((*root_var)->tag == OK_TO_FREE) {
+    free_variable(root_var);
+  }
 }
