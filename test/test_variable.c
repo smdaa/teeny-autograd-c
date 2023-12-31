@@ -36,6 +36,24 @@ static void test_new_variable(void **state) {
   free_graph_variable(&var);
 }
 
+static void test_shallow_copy_variable(void **state) {
+  (void)state;
+  ndarray *val = random_uniform_ndarray(2, (int[]){100, 100}, 0.0, 1.0);
+  variable *var = new_variable(val);
+
+  variable * n_var = shallow_copy_variable(var);
+  assert_true(is_equal_ndarray(var->val, n_var->val, NDARRAY_TYPE_EPSILON));
+  assert_true(is_equal_ndarray(var->grad, n_var->grad, NDARRAY_TYPE_EPSILON));
+  assert_null(n_var->children);
+  assert_int_equal(n_var->n_children, 0);
+  assert_null(n_var->backward);
+  assert_int_equal(n_var->ref_count, 0);
+
+  free_ndarray(&val);
+  free_graph_variable(&var);
+  free_graph_variable(&n_var);
+}
+
 static void test_add_variable(void **state) {
   (void)state;
 
@@ -672,6 +690,7 @@ int main(void) {
   }
   const struct CMUnitTest tests[] = {
       cmocka_unit_test(test_new_variable),
+      cmocka_unit_test(test_shallow_copy_variable),
       cmocka_unit_test(test_add_variable),
       cmocka_unit_test(test_subtract_variable),
       cmocka_unit_test(test_multiply_variable),

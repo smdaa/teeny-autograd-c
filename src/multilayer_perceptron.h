@@ -24,6 +24,8 @@ typedef struct multilayer_perceptron {
   int *out_sizes;
   variable **weights;
   variable **bias;
+  variable **weights_copy;
+  variable **bias_copy;
   activation_function *activations;
   random_initialisation *random_initialisations;
 
@@ -34,8 +36,14 @@ new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes,
                           int *out_sizes, activation_function *activations,
                           random_initialisation *random_initialisations);
 
-variable *forward_multilayer_perceptron(multilayer_perceptron *mlp,
-                                        variable *input);
+variable *forward_batch_multilayer_perceptron(multilayer_perceptron *mlp,
+                                              variable *x_batch);
+
+void train_multilayer_perceptron(multilayer_perceptron *mlp,
+                                 variable **x_batches, variable **y_batches,
+                                 int n_batches, int n_epochs,
+                                 NDARRAY_TYPE learning_rate,
+                                 variable *(*loss_fn)(variable *, variable *));
 
 void zero_grad_multilayer_perceptron(multilayer_perceptron *mlp);
 

@@ -76,7 +76,7 @@ int main(void) {
   // Forward pass
   for (int i = 0; i < n_batches; i++) {
     variable *x_batch = (x_batches[i]);
-    variable *y_batch = forward_multilayer_perceptron(mlp, x_batch);
+    variable *y_batch = forward_batch_multilayer_perceptron(mlp, x_batch);
     y_batches[i] = y_batch;
   }
 

@@ -70,9 +70,9 @@ new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes,
   return mlp;
 }
 
-variable *forward_multilayer_perceptron(multilayer_perceptron *mlp,
-                                        variable *input) {
-  variable *output = input;
+variable *forward_batch_multilayer_perceptron(multilayer_perceptron *mlp,
+                                              variable *x_batch) {
+  variable *output = x_batch;
   for (int i = 0; i < mlp->n_layers; i++) {
     output = matmul_variable(output, mlp->weights[i]);
     output = add_variable(output, mlp->bias[i]);
@@ -97,6 +97,46 @@ variable *forward_multilayer_perceptron(multilayer_perceptron *mlp,
   }
 
   return output;
+}
+
+void train_multilayer_perceptron(multilayer_perceptron *mlp,
+                                 variable **x_batches, variable **y_batches,
+                                 int n_batches, int n_epochs,
+                                 NDARRAY_TYPE learning_rate,
+                                 variable *(*loss_fn)(variable *, variable *)) {
+
+  variable **weights = (variable **)malloc(mlp->n_layers * sizeof(variable *));
+  variable **bias = (variable **)malloc(mlp->n_layers * sizeof(variable *));
+  for (int i = 0; i < n_epochs; i++) {
+    for (int j = 0; j < n_batches; j++) {
+      variable *x_batch = shallow_copy_variable(x_batches[j]);
+      variable *y_batch = shallow_copy_variable(y_batches[j]);
+      variable *y_hat_batch = forward_batch_multilayer_perceptron(mlp, x_batch);
+      variable *loss_batch = loss_fn(y_hat_batch, y_batch);
+
+      zero_grad_multilayer_perceptron(mlp);
+      backward_variable(loss_batch);
+      if (j % 100 == 0) {
+        printf("Epoch %d, batch %d, loss: %f\n", i, j,
+               sum_all_ndarray(loss_batch->val));
+      }
+      update_multilayer_perceptron(mlp, learning_rate);
+
+      for (int k = 0; k < mlp->n_layers; k++) {
+        weights[k] = shallow_copy_variable(mlp->weights[k]);
+        bias[k] = shallow_copy_variable(mlp->bias[k]);
+      }
+
+      free_graph_variable(&loss_batch);
+
+      for (int k = 0; k < mlp->n_layers; k++) {
+        mlp->weights[k] = weights[k];
+        mlp->bias[k] = bias[k];
+      }
+    }
+  }
+  free(weights);
+  free(bias);
 }
 
 void zero_grad_multilayer_perceptron(multilayer_perceptron *mlp) {

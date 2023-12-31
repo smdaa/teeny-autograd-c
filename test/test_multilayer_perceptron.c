@@ -134,7 +134,7 @@ static void test_forward_multilayer_perceptron(void **state) {
   mlp->bias[0] = bias0_var;
   mlp->bias[1] = bias1_var;
   mlp->bias[2] = bias2_var;
-  variable *y_hat_var = forward_multilayer_perceptron(mlp, x_var);
+  variable *y_hat_var = forward_batch_multilayer_perceptron(mlp, x_var);
   free_ndarray(&(y_hat_var->grad));
   y_hat_var->grad = z;
   backward_variable(y_hat_var);

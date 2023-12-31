@@ -3,10 +3,6 @@
 #ifndef TEENY_AUTOGRAD_C_VARIABLE_H
 #define TEENY_AUTOGRAD_C_VARIABLE_H
 
-typedef enum {
-  OK_TO_FREE,
-  DO_NOT_FREE
-} variable_tag;
 
 typedef struct variable {
   ndarray *val;
@@ -17,10 +13,11 @@ typedef struct variable {
   void (*backward)(struct variable *);
 
   int ref_count;
-  variable_tag tag;
 } variable;
 
 variable *new_variable(ndarray *val);
+
+variable * shallow_copy_variable(variable* var);
 
 variable *add_variable(variable *var1, variable *var2);
 
