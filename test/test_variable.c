@@ -289,6 +289,38 @@ static void test_power_variable(void **state) {
   }
 }
 
+static void test_negate_variable(void **state) {
+  (void)state;
+  char path[256];
+
+  snprintf(path, sizeof(path), "%s/test_negate_variable/x.txt", dataDir);
+  ndarray *x = read_ndarray(path);
+
+  snprintf(path, sizeof(path), "%s/test_negate_variable/y.txt", dataDir);
+  ndarray *y = read_ndarray(path);
+
+  snprintf(path, sizeof(path), "%s/test_negate_variable/z.txt", dataDir);
+  ndarray *z = read_ndarray(path);
+
+  snprintf(path, sizeof(path), "%s/test_negate_variable/x_grad.txt", dataDir);
+  ndarray *x_grad = read_ndarray(path);
+
+  variable *var_x = new_variable(x);
+  variable *var_y_hat = negate_variable(var_x);
+  free_ndarray(&(var_y_hat->grad));
+  var_y_hat->grad = z;
+  backward_variable(var_y_hat);
+
+  assert_true(is_equal_ndarray(var_y_hat->val, y, NDARRAY_TYPE_EPSILON));
+  assert_true(is_equal_ndarray(var_x->grad, x_grad, NDARRAY_TYPE_EPSILON));
+
+  free_ndarray(&x);
+  free_ndarray(&y);
+  free_ndarray(&x_grad);
+
+  free_graph_variable(&var_y_hat);
+}
+
 static void test_exp_variable(void **state) {
   (void)state;
   char path[256];
@@ -307,6 +339,38 @@ static void test_exp_variable(void **state) {
 
   variable *var_x = new_variable(x);
   variable *var_y_hat = exp_variable(var_x);
+  free_ndarray(&(var_y_hat->grad));
+  var_y_hat->grad = z;
+  backward_variable(var_y_hat);
+
+  assert_true(is_equal_ndarray(var_y_hat->val, y, NDARRAY_TYPE_EPSILON));
+  assert_true(is_equal_ndarray(var_x->grad, x_grad, NDARRAY_TYPE_EPSILON));
+
+  free_ndarray(&x);
+  free_ndarray(&y);
+  free_ndarray(&x_grad);
+
+  free_graph_variable(&var_y_hat);
+}
+
+static void test_log_variable(void **state) {
+  (void)state;
+  char path[256];
+
+  snprintf(path, sizeof(path), "%s/test_log_variable/x.txt", dataDir);
+  ndarray *x = read_ndarray(path);
+
+  snprintf(path, sizeof(path), "%s/test_log_variable/y.txt", dataDir);
+  ndarray *y = read_ndarray(path);
+
+  snprintf(path, sizeof(path), "%s/test_log_variable/z.txt", dataDir);
+  ndarray *z = read_ndarray(path);
+
+  snprintf(path, sizeof(path), "%s/test_log_variable/x_grad.txt", dataDir);
+  ndarray *x_grad = read_ndarray(path);
+
+  variable *var_x = new_variable(x);
+  variable *var_y_hat = log_variable(var_x);
   free_ndarray(&(var_y_hat->grad));
   var_y_hat->grad = z;
   backward_variable(var_y_hat);
@@ -613,7 +677,9 @@ int main(void) {
       cmocka_unit_test(test_multiply_variable),
       cmocka_unit_test(test_divide_variable),
       cmocka_unit_test(test_power_variable),
+      cmocka_unit_test(test_negate_variable),
       cmocka_unit_test(test_exp_variable),
+      cmocka_unit_test(test_log_variable),
       cmocka_unit_test(test_relu_variable),
       cmocka_unit_test(test_sigmoid_variable),
       cmocka_unit_test(test_tanh_variable),

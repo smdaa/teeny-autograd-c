@@ -37,6 +37,11 @@ new_multilayer_perceptron(int n_layers, int batch_size, int *in_sizes,
 variable *forward_multilayer_perceptron(multilayer_perceptron *mlp,
                                         variable *input);
 
+void zero_grad_multilayer_perceptron(multilayer_perceptron *mlp);
+
+void update_multilayer_perceptron(multilayer_perceptron *mlp,
+                                  NDARRAY_TYPE learning_rate);
+
 void free_multilayer_perceptron(multilayer_perceptron **mlp);
 
 #endif

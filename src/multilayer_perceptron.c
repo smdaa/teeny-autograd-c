@@ -99,6 +99,41 @@ variable *forward_multilayer_perceptron(multilayer_perceptron *mlp,
   return output;
 }
 
+void zero_grad_multilayer_perceptron(multilayer_perceptron *mlp) {
+  ndarray *place_holder;
+  for (int i = 0; i < mlp->n_layers; i++) {
+    place_holder = mlp->weights[i]->grad;
+    mlp->weights[i]->grad =
+        zeros_ndarray(mlp->weights[i]->grad->dim, mlp->weights[i]->grad->shape);
+    free_ndarray(&place_holder);
+
+    place_holder = mlp->bias[i]->grad;
+    mlp->bias[i]->grad =
+        zeros_ndarray(mlp->bias[i]->grad->dim, mlp->bias[i]->grad->shape);
+    free_ndarray(&place_holder);
+  }
+}
+
+void update_multilayer_perceptron(multilayer_perceptron *mlp,
+                                  NDARRAY_TYPE learning_rate) {
+  ndarray *place_holder;
+  ndarray *temp;
+  for (int i = 0; i < mlp->n_layers; i++) {
+    place_holder = mlp->weights[i]->val;
+    temp = multiply_ndarray_scalar(mlp->weights[i]->grad, learning_rate);
+    mlp->weights[i]->val = subtract_ndarray_ndarray(mlp->weights[i]->val, temp);
+    free_ndarray(&place_holder);
+    free_ndarray(&temp);
+
+    place_holder = mlp->bias[i]->val;
+    temp = multiply_ndarray_scalar(mlp->bias[i]->grad, learning_rate);
+    mlp->bias[i]->val = subtract_ndarray_ndarray(mlp->bias[i]->val, temp);
+
+    free_ndarray(&place_holder);
+    free_ndarray(&temp);
+  }
+}
+
 void free_multilayer_perceptron(multilayer_perceptron **mlp) {
   if (*mlp == NULL) {
     return;

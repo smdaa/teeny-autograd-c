@@ -67,7 +67,11 @@ if(BUILD_EXAMPLES)
     set_target_properties(lodepng PROPERTIES LINKER_LANGUAGE C)
 
     # Create the paint executable
-    add_executable(paint examples/paint/main.c)
+    add_executable(paint examples/paint/paint.c)
     target_link_libraries(paint teeny-autograd-c m lodepng)
+
+    # Create the mnist_mlp executable
+    add_executable(mnist_mlp examples/mnist_mlp/mnist_mlp.c)
+    target_link_libraries(mnist_mlp teeny-autograd-c m)
 endif()
 

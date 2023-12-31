@@ -154,7 +154,6 @@ ndarray *random_normal_ndarray(int dim, int *shape, NDARRAY_TYPE mean,
     arr->shape[i] = shape[i];
   }
   arr->data = (NDARRAY_TYPE *)malloc(arr->size * sizeof(NDARRAY_TYPE));
-  arr->data = (NDARRAY_TYPE *)malloc(arr->size * sizeof(NDARRAY_TYPE));
   for (int i = 0; i < arr->size; i++) {
     arr->data[i] = mean + std * sample_normal();
   }

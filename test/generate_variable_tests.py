@@ -154,11 +154,25 @@ def main():
         "test_power_variable", args.output_dir, lambda x, y: x**y, a_shapes, b_shapes
     )
 
+    # test_negate_variable
+    n = 10
+    x_shape = (n, n)
+    generate_unary_op_test_data(
+        "test_negate_variable", args.output_dir, lambda x:-x, x_shape
+    )
+
     # test_exp_variable
     n = 10
     x_shape = (n, n)
     generate_unary_op_test_data(
         "test_exp_variable", args.output_dir, torch.exp, x_shape
+    )
+
+    # test_log_variable
+    n = 10
+    x_shape = (n, n)
+    generate_unary_op_test_data(
+        "test_log_variable", args.output_dir, torch.log, x_shape
     )
 
     # test_relu_variable

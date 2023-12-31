@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+NDARRAY_TYPE negate(NDARRAY_TYPE a) { return -a; }
+
 NDARRAY_TYPE relu(NDARRAY_TYPE a) { return fmax(a, 0.0); }
 
 NDARRAY_TYPE sigmoid(NDARRAY_TYPE a) { return 1.0 / (1.0 + exp(-a)); }
@@ -28,6 +30,7 @@ variable *new_variable(ndarray *val) {
   var->n_children = 0;
   var->backward = NULL;
   var->ref_count = 0;
+  var->tag = OK_TO_FREE;
 
   return var;
 }
@@ -238,6 +241,17 @@ void power_backward(variable *var) {
   free_ndarray(&reduced_grad);
 }
 
+void negate_backward(variable *var){
+  ndarray *place_holder;
+  ndarray *temp;
+
+  place_holder = var->children[0]->grad;
+  temp = unary_op_ndarray(var->grad, negate);
+  var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp);
+  free_ndarray(&temp);
+  free_ndarray(&place_holder);
+}
+
 void exp_backward(variable *var) {
   ndarray *place_holder;
   ndarray *temp0;
@@ -245,6 +259,20 @@ void exp_backward(variable *var) {
 
   place_holder = var->children[0]->grad;
   temp0 = unary_op_ndarray(var->children[0]->val, exp);
+  temp1 = multiply_ndarray_ndarray(var->grad, temp0);
+  var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp1);
+  free_ndarray(&temp0);
+  free_ndarray(&temp1);
+  free_ndarray(&place_holder);
+}
+
+void log_backward(variable *var) {
+  ndarray *place_holder;
+  ndarray *temp0;
+  ndarray *temp1;
+
+  place_holder = var->children[0]->grad;
+  temp0 = divide_scalar_ndarray(var->children[0]->val, 1.0);
   temp1 = multiply_ndarray_ndarray(var->grad, temp0);
   var->children[0]->grad = add_ndarray_ndarray(var->children[0]->grad, temp1);
   free_ndarray(&temp0);
@@ -431,6 +459,21 @@ variable *power_variable(variable *var1, variable *var2) {
   return var;
 }
 
+variable *negate_variable(variable *var){
+  variable *n_var = (variable *)malloc(sizeof(variable));
+  n_var->val = unary_op_ndarray(var->val, negate);
+  n_var->grad = zeros_ndarray(n_var->val->dim, n_var->val->shape);
+  n_var->children = (variable **)malloc(sizeof(variable *));
+  n_var->children[0] = var;
+  n_var->n_children = 1;
+  n_var->backward = negate_backward;
+  n_var->ref_count = 0;
+  var->ref_count++;
+
+  return n_var;
+
+}
+
 variable *exp_variable(variable *var) {
   variable *n_var = (variable *)malloc(sizeof(variable));
   n_var->val = unary_op_ndarray(var->val, exp);
@@ -439,6 +482,20 @@ variable *exp_variable(variable *var) {
   n_var->children[0] = var;
   n_var->n_children = 1;
   n_var->backward = exp_backward;
+  n_var->ref_count = 0;
+  var->ref_count++;
+
+  return n_var;
+}
+
+variable *log_variable(variable *var) {
+  variable *n_var = (variable *)malloc(sizeof(variable));
+  n_var->val = unary_op_ndarray(var->val, log);
+  n_var->grad = zeros_ndarray(n_var->val->dim, n_var->val->shape);
+  n_var->children = (variable **)malloc(sizeof(variable *));
+  n_var->children[0] = var;
+  n_var->n_children = 1;
+  n_var->backward = log_backward;
   n_var->ref_count = 0;
   var->ref_count++;
 

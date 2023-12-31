@@ -1,6 +1,7 @@
 pyvenv
-build-debug
-build-release
+build
 test/__pycache__
 .cache
 compile_commands.json
+.vscode
+example/mnist_mlp/x_train.txt
