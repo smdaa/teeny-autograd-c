@@ -28,10 +28,11 @@ variable **create_batches(ndarray *x, int batch_size) {
 variable *cross_entropy_loss(variable *logits, variable *y) {
   variable *y_hat_exp = exp_variable(logits);
   variable *y_hat_sum = sum_variable(y_hat_exp, 1);
-  variable *y_hat_log_sum = log_variable(add_variable(
-      y_hat_sum,
-      new_variable(full_ndarray(y_hat_sum->val->dim, y_hat_sum->val->shape,
-                                NDARRAY_TYPE_EPSILON))));
+  ndarray *temp = full_ndarray(y_hat_sum->val->dim, y_hat_sum->val->shape,
+                               NDARRAY_TYPE_EPSILON);
+  variable *y_hat_log_sum =
+      log_variable(add_variable(y_hat_sum, new_variable(temp)));
+  free_ndarray(&temp);
 
   variable *y_hat_softmax = subtract_variable(logits, y_hat_log_sum);
 
@@ -55,7 +56,7 @@ int main(void) {
   int n_layers = 2;
   int in_sizes[] = {28 * 28, 16};
   int out_sizes[] = {16, 10};
-  int batch_size = 128;
+  int batch_size = 256;
   int n_epochs = 2;
   NDARRAY_TYPE learning_rate = 0.01;
 
@@ -69,6 +70,11 @@ int main(void) {
   int n_batches = (x_train->shape[0] + batch_size - 1) / batch_size;
   variable **x_batches = create_batches(x_train, batch_size);
   variable **y_batches = create_batches(y_train, batch_size);
+  for (int i = 0; i < n_batches; i++) {
+    x_batches[i]->tag = DO_NOT_FREE;
+    y_batches[i]->tag = DO_NOT_FREE;
+  }
+
   free_ndarray(&x_train);
   free_ndarray(&y_train);
 
@@ -78,6 +84,10 @@ int main(void) {
   multilayer_perceptron *mlp =
       new_multilayer_perceptron(n_layers, batch_size, in_sizes, out_sizes,
                                 activations, random_initialisations);
+  for (int i = 0; i < mlp->n_layers; i++) {
+    mlp->weights[i]->tag = DO_NOT_FREE;
+    mlp->bias[i]->tag = DO_NOT_FREE;
+  }
 
   // Train model
   for (int i = 0; i < n_epochs; i++) {
@@ -96,15 +106,28 @@ int main(void) {
                sum_all_ndarray(loss_batch->val));
       }
 
+      if (i == n_epochs - 1) {
+        x_batch->tag = OK_TO_FREE;
+        y_batch->tag = OK_TO_FREE;
+        x_batch->ref_count = 0;
+        y_batch->ref_count = 0;
+        if (j == n_batches - 1) {
+          for (int k = 0; k < n_layers; k++) {
+            mlp->weights[k]->tag = OK_TO_FREE;
+            mlp->bias[k]->tag = OK_TO_FREE;
+            mlp->weights[k]->ref_count = 0;
+            mlp->bias[k]->ref_count = 0;
+          }
+        }
+      }
+
       free_graph_variable(&loss_batch);
     }
   }
 
-  for (int i = 0; i < n_batches; i++) {
-    free_variable(&x_batches[i]);
-    free_variable(&y_batches[i]);
-  }
   free(x_batches);
   free(y_batches);
   free_multilayer_perceptron(&mlp);
+
+  printf("Done.\n");
 }
