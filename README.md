@@ -64,6 +64,7 @@
 >
 > ```console
 > $ git clone https://github.com/smdaa/teeny-autograd-c
+> $ cd teeny-autograd-c
 > $ git submodule init && git submodule update --recursive
 > $ git lfs fetch --all
 > $ git lfs pull
