@@ -20,7 +20,7 @@
 
 ##  Overview
 
-Autograd, is a fundamental component in machine learning frameworks, enabling the automatic computation of gradients for training neural networks. This repository is my attempt at writing an Autograd library from scratch (no third-party libraries) in pure C.
+Autograd, is a fundamental component in machine learning frameworks, enabling the automatic computation of gradients for training neural networks. This repository is my attempt at writing a very basic Autograd library from scratch (no third-party libraries) in pure C.
 
 ---
 
