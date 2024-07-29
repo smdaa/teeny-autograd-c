@@ -85,7 +85,7 @@
 
 > Run the test suite using the command below:
 > ```console
-> $ > ctest --rerun-failed --output-on-failure
+> $  ctest --rerun-failed --output-on-failure
 > ```
 
 ---
